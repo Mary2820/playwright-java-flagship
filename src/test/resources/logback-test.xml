@@ -5,6 +5,9 @@
         </encoder>
     </appender>
 
+    <!-- project log level, e.g. -DlogLevel=DEBUG to see blocked ad requests -->
+    <logger name="io.github.mary2820" level="${logLevel:-INFO}"/>
+
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>

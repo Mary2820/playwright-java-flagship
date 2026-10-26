@@ -50,4 +50,8 @@ public final class Config {
     public static double slowMo() {
         return Double.parseDouble(get("slowMo"));
     }
+
+    public static boolean blockAds() {
+        return Boolean.parseBoolean(get("blockAds"));
+    }
 }
