@@ -44,3 +44,6 @@ videos/
 
 ### Secrets ###
 .env
+
+### Claude Code (personal) ###
+.claude/settings.local.json

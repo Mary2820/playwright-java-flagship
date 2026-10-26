@@ -1,18 +1,17 @@
-package io.github.mary2820.tests;
+package io.github.mary2820.tests.ui;
 
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import io.github.mary2820.BaseTest;
+import io.github.mary2820.base.BaseTest;
 import org.testng.annotations.Test;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-import static io.github.mary2820.Constants.BASE_URL;
 
 public class HomePageTest extends BaseTest {
 
     @Test
     public void openSiteTest() {
-        page.navigate(BASE_URL);
+        page.navigate("/");
 
         assertThat(page).hasTitle("Automation Exercise");
         var logo = page.getByRole(AriaRole.IMG, new Page.GetByRoleOptions().setName("Website for automation practice"));
