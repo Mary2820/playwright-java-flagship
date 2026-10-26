@@ -7,7 +7,8 @@ UI test automation for [automationexercise.com](https://automationexercise.com) 
 - Java 21
 - Playwright for Java 1.63
 - TestNG 7.12
-- Maven (Surefire 3.6)
+- Maven 3.9.9 via Maven Wrapper (`./mvnw`, no local Maven needed), Surefire 3.6
+- SLF4J + Logback for logging
 
 ## Project structure
 
@@ -34,14 +35,14 @@ Framework code (config, pages) lives in `src/main`; tests and test lifecycle liv
 Install browsers once:
 
 ```bash
-mvn exec:java -e -Dexec.classpathScope=test \
+./mvnw exec:java -e -Dexec.classpathScope=test \
   -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install"
 ```
 
 Run the suite:
 
 ```bash
-mvn test
+./mvnw test
 ```
 
 ## Configuration
@@ -59,9 +60,9 @@ Defaults are in `src/main/resources/config.properties`. Any value can be overrid
 Examples:
 
 ```bash
-mvn test -Dheadless=false
-mvn test -Dbrowser=webkit
-mvn test -Dheadless=false -DslowMo=500
+./mvnw test -Dheadless=false
+./mvnw test -Dbrowser=webkit
+./mvnw test -Dheadless=false -DslowMo=500
 ```
 
 ## Traces on failure
@@ -71,7 +72,7 @@ Every test records a Playwright trace. If the test fails, it is saved to `traces
 Open a trace:
 
 ```bash
-mvn exec:java -e -Dexec.classpathScope=test \
+./mvnw exec:java -e -Dexec.classpathScope=test \
   -Dexec.mainClass=com.microsoft.playwright.CLI \
   -Dexec.args="show-trace traces/HomePageTest.openSiteTest.zip"
 ```
