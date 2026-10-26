@@ -7,6 +7,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Tracing;
 import io.github.mary2820.config.Config;
+import io.github.mary2820.utils.AdBlocker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
@@ -51,6 +52,9 @@ public class BaseTest {
     public void setupPage(Method method) {
         LOGGER.info("Test started: {}.{}", method.getDeclaringClass().getSimpleName(), method.getName());
         context = browser.newContext(getConfig());
+        if (Config.blockAds()) {
+            AdBlocker.apply(context);
+        }
         context.setDefaultTimeout(Config.timeout());
         context.tracing().start(new Tracing.StartOptions()
                 .setScreenshots(true)

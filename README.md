@@ -56,6 +56,8 @@ Defaults are in `src/main/resources/config.properties`. Any value can be overrid
 | `headless` | `true`                           | `false` to see the browser               |
 | `timeout`  | `10000`                          | Default timeout for actions, ms          |
 | `slowMo`   | `0`                              | Delay between actions, ms                |
+| `blockAds` | `true`                           | Abort requests to ad and consent hosts   |
+| `logLevel` | `INFO`                           | Project log level; `DEBUG` shows blocked ad requests |
 
 Examples:
 
