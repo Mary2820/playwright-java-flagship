@@ -1,13 +1,11 @@
 package io.github.mary2820.base;
 
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.BrowserContext;
-import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.Page;
+import com.microsoft.playwright.APIRequest;
+import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.Playwright;
-import com.microsoft.playwright.Tracing;
+import io.github.mary2820.api.UserApi;
 import io.github.mary2820.config.Config;
-import io.github.mary2820.utils.AdBlocker;
+import io.github.mary2820.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
@@ -17,78 +15,60 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 
 import java.lang.reflect.Method;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-public class BaseTest {
+// shared by UI and API tests, TestNG treats same-named lifecycle methods in subclasses as overrides
+public abstract class BaseTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
-    private static final Path TRACES_DIR = Paths.get("traces");
 
-    private Playwright pw;
-    private Browser browser;
-    private BrowserContext context;
-    protected Page page;
+    // package-private: the base classes need it, tests do not
+    Playwright pw;
+    private APIRequestContext apiRequest;
+    protected UserApi userApi;
+    protected UserService userService;
 
     @BeforeClass
-    public void setup(){
+    public void setupPlaywright() {
         pw = Playwright.create();
-        LOGGER.info("Launching {} (headless={}, slowMo={}), baseUrl={}",
-                Config.browser(), Config.headless(), Config.slowMo(), Config.baseUrl());
-        browser = browserType().launch(new BrowserType.LaunchOptions()
-                .setHeadless(Config.headless())
-                .setSlowMo(Config.slowMo()));
-    }
-
-    private BrowserType browserType() {
-        return switch (Config.browser().toLowerCase()) {
-            case "chromium" -> pw.chromium();
-            case "firefox" -> pw.firefox();
-            case "webkit" -> pw.webkit();
-            default -> throw new IllegalArgumentException("Unsupported browser: " + Config.browser());
-        };
     }
 
     @BeforeMethod
-    public void setupPage(Method method) {
+    public void setupApi(Method method) {
         LOGGER.info("Test started: {}.{}", method.getDeclaringClass().getSimpleName(), method.getName());
-        context = browser.newContext(getConfig());
-        if (Config.blockAds()) {
-            AdBlocker.apply(context);
-        }
-        context.setDefaultTimeout(Config.timeout());
-        context.tracing().start(new Tracing.StartOptions()
-                .setScreenshots(true)
-                .setSnapshots(true)
-                .setSources(true));
-        page = context.newPage();
-    }
-
-    private Browser.NewContextOptions getConfig() {
-        return new Browser.NewContextOptions()
-                .setBaseURL(Config.baseUrl());
+        // separate from context.request(), so API calls do not share cookies with the browser
+        apiRequest = pw.request().newContext(new APIRequest.NewContextOptions()
+                .setBaseURL(Config.baseUrl()));
+        userApi = new UserApi(apiRequest);
+        userService = new UserService(userApi);
     }
 
     @AfterMethod(alwaysRun = true)
-    public void cleanupPage(ITestResult result) {
-        if (context == null)
-            return;
-        String name = result.getTestClass().getRealClass().getSimpleName() + "." + result.getName();
-        // keep trace.zip only for failed tests
-        if (result.getStatus() == ITestResult.FAILURE) {
-            Path trace = TRACES_DIR.resolve(name + ".zip");
-            context.tracing().stop(new Tracing.StopOptions()
-                    .setPath(trace));
-            LOGGER.error("Test failed: {}, trace saved to {}", name, trace.toAbsolutePath());
-        } else {
-            context.tracing().stop();
-            LOGGER.info("Test {}: {}", result.getStatus() == ITestResult.SUCCESS ? "passed" : "skipped", name);
+    public void cleanupApi(ITestResult result) {
+        if (userService != null) {
+            userService.cleanup();
+            userService = null;
         }
-        context.close();
-        context = null;
+        if (apiRequest != null) {
+            apiRequest.dispose();
+            apiRequest = null;
+        }
+        logResult(result);
+    }
+
+    private void logResult(ITestResult result) {
+        String name = testName(result);
+        switch (result.getStatus()) {
+            case ITestResult.SUCCESS -> LOGGER.info("Test passed: {}", name);
+            case ITestResult.FAILURE -> LOGGER.error("Test failed: {}", name);
+            default -> LOGGER.info("Test skipped: {}", name);
+        }
+    }
+
+    static String testName(ITestResult result) {
+        return result.getTestClass().getRealClass().getSimpleName() + "." + result.getName();
     }
 
     @AfterClass(alwaysRun = true)
-    public void cleanup() {
+    public void closePlaywright() {
         if (pw != null)
             pw.close();
     }

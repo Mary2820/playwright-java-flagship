@@ -1,6 +1,6 @@
 package io.github.mary2820.tests.ui;
 
-import io.github.mary2820.base.BaseTest;
+import io.github.mary2820.base.BaseUiTest;
 import io.github.mary2820.config.Config;
 import io.github.mary2820.pages.HomePage;
 import io.github.mary2820.utils.AdBlocker;
@@ -11,7 +11,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
-public class AdBlockerTest extends BaseTest {
+public class AdBlockerTest extends BaseUiTest {
 
     @Test
     public void homePageHasNoAdsTest() {
