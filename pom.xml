@@ -13,12 +13,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <playwright.version>1.63.0</playwright.version>
         <testng.version>7.12.0</testng.version>
-        <surefire.version>3.6.0</surefire.version>
+        <!-- 3.6.0 ignores suiteXmlFiles, so it would run every test instead of the chosen suite -->
+        <surefire.version>3.5.6</surefire.version>
         <slf4j.version>2.0.17</slf4j.version>
         <logback.version>1.5.18</logback.version>
         <jackson.version>2.22.4</jackson.version>
         <assertj.version>3.27.7</assertj.version>
         <datafaker.version>2.7.0</datafaker.version>
+        <suite>src/test/resources/testng.xml</suite>
     </properties>
 
     <dependencies>
@@ -70,7 +72,7 @@
                 <version>${surefire.version}</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                        <suiteXmlFile>${suite}</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
