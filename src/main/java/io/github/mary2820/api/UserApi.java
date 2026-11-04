@@ -11,6 +11,8 @@ import io.github.mary2820.models.TestUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static io.github.mary2820.constants.IConstants.*;
+
 public class UserApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserApi.class);
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -34,7 +36,7 @@ public class UserApi {
                 .set("state", user.state())
                 .set("city", user.city())
                 .set("mobile_number", user.mobileNumber());
-        ApiResponse response = parse(request.post("/api/createAccount", RequestOptions.create().setForm(form)));
+        ApiResponse response = parse(request.post(CREATE_ACCOUNT_ENDPOINT, RequestOptions.create().setForm(form)));
         LOGGER.info("createAccount {} -> {}", user.email(), response);
         return response;
     }
@@ -43,7 +45,7 @@ public class UserApi {
         FormData form = FormData.create()
                 .set("email", email)
                 .set("password", password);
-        ApiResponse response = parse(request.delete("/api/deleteAccount", RequestOptions.create().setForm(form)));
+        ApiResponse response = parse(request.delete(DELETE_ACCOUNT_ENDPOINT, RequestOptions.create().setForm(form)));
         LOGGER.info("deleteAccount {} -> {}", email, response);
         return response;
     }
@@ -52,7 +54,7 @@ public class UserApi {
         FormData form = FormData.create()
                 .set("email", email)
                 .set("password", password);
-        return parse(request.post("/api/verifyLogin", RequestOptions.create().setForm(form)));
+        return parse(request.post(VERIFY_LOGIN_ENDPOINT, RequestOptions.create().setForm(form)));
     }
 
     private ApiResponse parse(APIResponse response) {
