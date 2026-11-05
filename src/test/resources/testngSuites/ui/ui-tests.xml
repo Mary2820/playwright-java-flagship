@@ -27,4 +27,22 @@
             </class>
         </classes>
     </test>
+    <test name="Login with valid credentials">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.LoginTest">
+                <methods>
+                    <include name="userCanLoginWithValidCredentialsTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Login with wrong password">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.LoginTest">
+                <methods>
+                    <include name="loginFailsWithWrongPasswordTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>
