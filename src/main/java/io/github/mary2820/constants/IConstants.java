@@ -5,11 +5,16 @@ public interface IConstants {
 
     // prefixes for assertion messages, show where a check failed
     String PAGE_NAME_HOME = "[HOME screen]: ";
+    String PAGE_NAME_LOGIN = "[LOGIN screen]: ";
     String PAGE_NAME_AD_BLOCKER = "[AD BLOCKER]: ";
     String PAGE_NAME_USER_API = "[USER API]: ";
 
     // pages
     String HOME_PAGE_TITLE = "Automation Exercise";
+
+    // UI messages
+    String LOGIN_ERROR = "Your email or password is incorrect!";
+    String WRONG_PASSWORD = "wrong_password";
 
     // API endpoints
     String CREATE_ACCOUNT_ENDPOINT = "/api/createAccount";

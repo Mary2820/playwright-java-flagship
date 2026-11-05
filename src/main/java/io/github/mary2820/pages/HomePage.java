@@ -7,11 +7,11 @@ import com.microsoft.playwright.options.AriaRole;
 public class HomePage extends BasePage {
     private static final String PATH = "/";
 
-    private final Locator logo;
+    private final Locator imgLogo;
 
     public HomePage(Page page) {
         super(page);
-        this.logo = page.getByRole(AriaRole.IMG, new Page.GetByRoleOptions()
+        this.imgLogo = page.getByRole(AriaRole.IMG, new Page.GetByRoleOptions()
                 .setName("Website for automation practice"));
     }
 
@@ -21,6 +21,6 @@ public class HomePage extends BasePage {
     }
 
     public Locator logo() {
-        return logo;
+        return imgLogo;
     }
 }

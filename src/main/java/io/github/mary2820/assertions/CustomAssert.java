@@ -48,8 +48,20 @@ public final class CustomAssert {
             verify(message, () -> PlaywrightAssertions.assertThat(locator).isVisible());
         }
 
+        public void isHidden() {
+            verify(message, () -> PlaywrightAssertions.assertThat(locator).isHidden());
+        }
+
         public void hasCount(int count) {
             verify(message, () -> PlaywrightAssertions.assertThat(locator).hasCount(count));
+        }
+
+        public void hasText(String text) {
+            verify(message, () -> PlaywrightAssertions.assertThat(locator).hasText(text));
+        }
+
+        public void containsText(String text) {
+            verify(message, () -> PlaywrightAssertions.assertThat(locator).containsText(text));
         }
     }
 
