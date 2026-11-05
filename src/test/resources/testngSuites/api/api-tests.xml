@@ -1,0 +1,30 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="api">
+    <test name="User lifecycle">
+        <classes>
+            <class name="io.github.mary2820.tests.api.UserApiTest">
+                <methods>
+                    <include name="userLifecycleTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Duplicate email is rejected">
+        <classes>
+            <class name="io.github.mary2820.tests.api.UserApiTest">
+                <methods>
+                    <include name="duplicateEmailIsRejectedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Wrong password is rejected">
+        <classes>
+            <class name="io.github.mary2820.tests.api.UserApiTest">
+                <methods>
+                    <include name="wrongPasswordIsRejectedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

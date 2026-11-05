@@ -1,0 +1,30 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="ui">
+    <test name="Open site">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.HomePageTest">
+                <methods>
+                    <include name="openSiteTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Home page has no ads">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.AdBlockerTest">
+                <methods>
+                    <include name="homePageHasNoAdsTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Ad URLs are recognised">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.AdBlockerTest">
+                <methods>
+                    <include name="isAdTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

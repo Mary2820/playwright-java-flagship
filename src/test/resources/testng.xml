@@ -1,8 +1,7 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="flagship">
-    <test name="ui">
-        <packages>
-            <package name="io.github.mary2820.tests.*"/>
-        </packages>
-    </test>
+    <suite-files>
+        <suite-file path="testngSuites/api/api-tests.xml"/>
+        <suite-file path="testngSuites/ui/ui-tests.xml"/>
+    </suite-files>
 </suite>
