@@ -63,4 +63,40 @@
             </class>
         </classes>
     </test>
+    <test name="Removed product disappears from cart">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.CartTest">
+                <methods>
+                    <include name="removedProductDisappearsAndCartBecomesEmptyTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Signup fails with registered email">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.LoginTest">
+                <methods>
+                    <include name="signupFailsWhenEmailAlreadyRegisteredTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Contact form is submitted after confirm">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.ContactUsTest">
+                <methods>
+                    <include name="contactFormIsSubmittedAfterConfirmingDialogTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Cart persists across sessions">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.AuthenticatedCartTest">
+                <methods>
+                    <include name="cartPersistsAcrossSessionsForLoggedInUserTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>

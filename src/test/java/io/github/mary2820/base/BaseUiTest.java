@@ -45,11 +45,7 @@ public abstract class BaseUiTest extends BaseTest {
 
     @BeforeMethod
     public void setupPage() {
-        context = browser.newContext(getConfig());
-        if (Config.blockAds()) {
-            AdBlocker.apply(context);
-        }
-        context.setDefaultTimeout(Config.timeout());
+        context = newContext(contextOptions());
         context.tracing().start(new Tracing.StartOptions()
                 .setScreenshots(true)
                 .setSnapshots(true)
@@ -57,9 +53,21 @@ public abstract class BaseUiTest extends BaseTest {
         page = context.newPage();
     }
 
-    private Browser.NewContextOptions getConfig() {
+    // template method: setupPage fixes the order of the steps, a test class overrides only the options
+    protected Browser.NewContextOptions contextOptions() {
         return new Browser.NewContextOptions()
                 .setBaseURL(Config.baseUrl());
+    }
+
+    // for contexts a test opens itself, so they get the same ad blocking and timeout as the default one;
+    // the caller closes it
+    protected BrowserContext newContext(Browser.NewContextOptions options) {
+        BrowserContext created = browser.newContext(options);
+        if (Config.blockAds()) {
+            AdBlocker.apply(created);
+        }
+        created.setDefaultTimeout(Config.timeout());
+        return created;
     }
 
     @AfterMethod(alwaysRun = true)

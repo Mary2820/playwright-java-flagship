@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import static io.github.mary2820.assertions.CustomAssert.assertThat;
 import static io.github.mary2820.constants.IConstants.DEFAULT_QUANTITY;
+import static io.github.mary2820.constants.IConstants.EMPTY_CART_MESSAGE;
 import static io.github.mary2820.constants.IConstants.PAGE_NAME_CART;
 
 public class CartTest extends BaseUiTest {
@@ -38,5 +39,19 @@ public class CartTest extends BaseUiTest {
                 .hasText(expectedPrice);
         assertThat(cart.quantityIn(0), "%sQuantity should be %s", PAGE_NAME_CART, DEFAULT_QUANTITY)
                 .hasText(DEFAULT_QUANTITY);
+    }
+
+    @Test
+    public void removedProductDisappearsAndCartBecomesEmptyTest() {
+        products.open().card(0).addToCart();
+        products.viewCartFromModal();
+        // precondition: without it the test would pass even if nothing was added and there is nothing to delete
+        assertThat(cart.rows(), "%sCart should have 1 row before the removal", PAGE_NAME_CART).hasCount(1);
+
+        cart.deleteIn(0);
+
+        assertThat(cart.rows(), "%sCart should have no rows after the removal", PAGE_NAME_CART).hasCount(0);
+        assertThat(cart.emptyCart(), "%sCart should say it is empty", PAGE_NAME_CART)
+                .containsText(EMPTY_CART_MESSAGE);
     }
 }

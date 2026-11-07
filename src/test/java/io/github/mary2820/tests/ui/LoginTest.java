@@ -40,4 +40,15 @@ public class LoginTest extends BaseUiTest {
         assertThat(loginPage.error(), "%sError should be %s", PAGE_NAME_LOGIN, LOGIN_ERROR).hasText(LOGIN_ERROR);
         assertThat(header.loggedInAs(), "%sUser should not be logged in", PAGE_NAME_LOGIN).isHidden();
     }
+
+    @Test
+    public void signupFailsWhenEmailAlreadyRegisteredTest() {
+        // the existing user comes from the API, a hardcoded one could be deleted by someone
+        TestUser existing = userService.create();
+
+        loginPage.open().signup("Another Name", existing.email());
+
+        assertThat(loginPage.signupError(), "%sError should be %s", PAGE_NAME_LOGIN, SIGNUP_EMAIL_EXISTS_ERROR)
+                .hasText(SIGNUP_EMAIL_EXISTS_ERROR);
+    }
 }

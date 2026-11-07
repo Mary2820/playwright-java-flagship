@@ -8,6 +8,7 @@ public interface IConstants {
     String PAGE_NAME_LOGIN = "[LOGIN screen]: ";
     String PAGE_NAME_PRODUCTS = "[PRODUCTS screen]: ";
     String PAGE_NAME_CART = "[CART screen]: ";
+    String PAGE_NAME_CONTACT_US = "[CONTACT US screen]: ";
     String PAGE_NAME_AD_BLOCKER = "[AD BLOCKER]: ";
     String PAGE_NAME_USER_API = "[USER API]: ";
 
@@ -19,6 +20,11 @@ public interface IConstants {
     String WRONG_PASSWORD = "wrong_password";
     String SEARCHED_PRODUCTS_TITLE = "Searched Products";
     String DEFAULT_QUANTITY = "1";
+    String EMPTY_CART_MESSAGE = "Cart is empty";
+    // the site's own wording, "exist" without the s
+    String SIGNUP_EMAIL_EXISTS_ERROR = "Email Address already exist!";
+    String CONTACT_CONFIRM_DIALOG = "Press OK to proceed!";
+    String CONTACT_SUCCESS = "submitted successfully";
 
     // API endpoints
     String CREATE_ACCOUNT_ENDPOINT = "/api/createAccount";
