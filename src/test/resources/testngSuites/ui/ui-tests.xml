@@ -45,4 +45,22 @@
             </class>
         </classes>
     </test>
+    <test name="Search returns matching products">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.ProductsTest">
+                <methods>
+                    <include name="searchReturnsOnlyMatchingProductsTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Added product appears in cart">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.CartTest">
+                <methods>
+                    <include name="addedProductAppearsInCartWithCatalogPriceAndQuantityOneTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>

@@ -5,6 +5,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import static io.github.mary2820.constants.IConstants.ZERO;
 
@@ -62,6 +63,10 @@ public final class CustomAssert {
 
         public void containsText(String text) {
             verify(message, () -> PlaywrightAssertions.assertThat(locator).containsText(text));
+        }
+
+        public void containsText(Pattern pattern) {
+            verify(message, () -> PlaywrightAssertions.assertThat(locator).containsText(pattern));
         }
     }
 
