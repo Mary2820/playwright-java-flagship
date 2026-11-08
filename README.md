@@ -57,7 +57,7 @@ Run everything (Maven finds every test class itself):
 ./mvnw test
 ```
 
-Run one area from its suite file. The suites live in `src/test/resources/testngSuites`: `api/api-tests.xml` and `ui/<page>-tests.xml` for `home`, `ad-blocker`, `login`, `products`, `cart` and `contact-us`. In the IDE run the file itself; with Maven pass its path:
+Run one area from its suite file. The suites live in `src/test/resources/testngSuites`: `api/api-tests.xml` and `ui/<page>-tests.xml` for `home`, `header`, `ad-blocker`, `login`, `products`, `cart` and `contact-us`. In the IDE run the file itself; with Maven pass its path:
 
 ```bash
 ./mvnw test -Dsurefire.suiteXmlFiles=src/test/resources/testngSuites/ui/cart-tests.xml

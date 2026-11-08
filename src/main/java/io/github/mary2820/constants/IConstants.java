@@ -6,6 +6,7 @@ public interface IConstants {
     // prefixes for assertion messages, show where a check failed
     String PAGE_NAME_HOME = "[HOME screen]: ";
     String PAGE_NAME_LOGIN = "[LOGIN screen]: ";
+    String PAGE_NAME_HEADER = "[HEADER]: ";
     String PAGE_NAME_PRODUCTS = "[PRODUCTS screen]: ";
     String PAGE_NAME_CART = "[CART screen]: ";
     String PAGE_NAME_CONTACT_US = "[CONTACT US screen]: ";
