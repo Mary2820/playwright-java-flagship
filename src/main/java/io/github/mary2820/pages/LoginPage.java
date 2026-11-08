@@ -12,6 +12,11 @@ public class LoginPage extends BasePage {
     private final Locator inputPassword;
     private final Locator buttonLogin;
     private final Locator textError;
+    private final Locator formSignup;
+    private final Locator inputSignupName;
+    private final Locator inputSignupEmail;
+    private final Locator buttonSignup;
+    private final Locator textSignupError;
 
     public LoginPage(Page page) {
         super(page);
@@ -21,6 +26,11 @@ public class LoginPage extends BasePage {
         this.inputPassword = formLogin.getByPlaceholder("Password");
         this.buttonLogin = formLogin.getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions().setName("Login"));
         this.textError = formLogin.locator("p");
+        this.formSignup = page.locator(".signup-form");
+        this.inputSignupName = formSignup.getByPlaceholder("Name");
+        this.inputSignupEmail = formSignup.getByPlaceholder("Email Address");
+        this.buttonSignup = formSignup.getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions().setName("Signup"));
+        this.textSignupError = formSignup.locator("p");
     }
 
     public LoginPage open() {
@@ -37,7 +47,17 @@ public class LoginPage extends BasePage {
         buttonLogin.click();
     }
 
+    public void signup(String name, String email) {
+        inputSignupName.fill(name);
+        inputSignupEmail.fill(email);
+        buttonSignup.click();
+    }
+
     public Locator error() {
         return textError;
+    }
+
+    public Locator signupError() {
+        return textSignupError;
     }
 }

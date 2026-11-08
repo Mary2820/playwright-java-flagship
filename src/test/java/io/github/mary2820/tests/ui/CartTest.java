@@ -5,24 +5,27 @@ import io.github.mary2820.components.ProductCard;
 import io.github.mary2820.pages.CartPage;
 import io.github.mary2820.pages.ProductsPage;
 import org.testng.annotations.BeforeMethod;
+import io.qase.commons.annotation.QaseId;
 import io.qase.commons.annotation.QaseIds;
 import org.testng.annotations.Test;
 
 import static io.github.mary2820.assertions.CustomAssert.assertThat;
 import static io.github.mary2820.constants.IConstants.DEFAULT_QUANTITY;
+import static io.github.mary2820.constants.IConstants.EMPTY_CART_MESSAGE;
 import static io.github.mary2820.constants.IConstants.PAGE_NAME_CART;
+import static io.github.mary2820.constants.IConstants.PRIORITY_HIGH;
 
 public class CartTest extends BaseUiTest {
     private ProductsPage products;
     private CartPage cart;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void initPages() {
         products = new ProductsPage(page);
         cart = new CartPage(page);
     }
 
-    @Test
+    @Test(description = "Added product has the catalog name and price, quantity 1", groups = PRIORITY_HIGH)
     @QaseIds({120, 176})
     public void addedProductAppearsInCartWithCatalogPriceAndQuantityOneTest() {
         ProductCard card = products.open().card(0);
@@ -40,5 +43,20 @@ public class CartTest extends BaseUiTest {
                 .hasText(expectedPrice);
         assertThat(cart.quantityIn(0), "%sQuantity should be %s", PAGE_NAME_CART, DEFAULT_QUANTITY)
                 .hasText(DEFAULT_QUANTITY);
+    }
+
+    @Test(description = "Delete the only product", groups = PRIORITY_HIGH)
+    @QaseId(182)
+    public void removedProductDisappearsAndCartBecomesEmptyTest() {
+        products.open().card(0).addToCart();
+        products.viewCartFromModal();
+        // precondition: without it the test would pass even if nothing was added and there is nothing to delete
+        assertThat(cart.rows(), "%sCart should have 1 row before the removal", PAGE_NAME_CART).hasCount(1);
+
+        cart.deleteIn(0);
+
+        assertThat(cart.rows(), "%sCart should have no rows after the removal", PAGE_NAME_CART).hasCount(0);
+        assertThat(cart.emptyCart(), "%sCart should say it is empty", PAGE_NAME_CART)
+                .containsText(EMPTY_CART_MESSAGE);
     }
 }

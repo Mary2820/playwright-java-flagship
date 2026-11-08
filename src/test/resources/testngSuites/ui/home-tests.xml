@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="home">
+    <test name="Open site">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.HomePageTest">
+                <methods>
+                    <include name="openSiteTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

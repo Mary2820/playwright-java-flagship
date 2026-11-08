@@ -8,10 +8,11 @@ import org.testng.annotations.Test;
 import static io.github.mary2820.assertions.CustomAssert.assertThat;
 import static io.github.mary2820.constants.IConstants.HOME_PAGE_TITLE;
 import static io.github.mary2820.constants.IConstants.PAGE_NAME_HOME;
+import static io.github.mary2820.constants.IConstants.PRIORITY_HIGH;
 
 public class HomePageTest extends BaseUiTest {
 
-    @Test
+    @Test(description = "Browser tab title and logo", groups = PRIORITY_HIGH)
     @QaseId(151)
     public void openSiteTest() {
         HomePage homePage = new HomePage(page).open();

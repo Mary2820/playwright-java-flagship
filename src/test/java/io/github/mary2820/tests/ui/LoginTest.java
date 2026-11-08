@@ -10,19 +10,20 @@ import org.testng.annotations.Test;
 
 import static io.github.mary2820.assertions.CustomAssert.assertThat;
 import static io.github.mary2820.constants.IConstants.*;
+import static io.github.mary2820.constants.IConstants.PRIORITY_HIGH;
 
 public class LoginTest extends BaseUiTest {
     private LoginPage loginPage;
     private HeaderComponent header;
 
     // runs after the BaseUiTest @BeforeMethod, so page already exists
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void initPages() {
         loginPage = new LoginPage(page);
         header = new HeaderComponent(page);
     }
 
-    @Test
+    @Test(description = "Login with valid credentials", groups = PRIORITY_HIGH)
     @QaseId(76)
     public void userCanLoginWithValidCredentialsTest() {
         TestUser user = userService.create();
@@ -33,7 +34,7 @@ public class LoginTest extends BaseUiTest {
                 .containsText(user.name());
     }
 
-    @Test
+    @Test(description = "Login with a wrong password", groups = PRIORITY_HIGH)
     @QaseId(77)
     public void loginFailsWithWrongPasswordTest() {
         TestUser user = userService.create();
@@ -42,5 +43,17 @@ public class LoginTest extends BaseUiTest {
 
         assertThat(loginPage.error(), "%sError should be %s", PAGE_NAME_LOGIN, LOGIN_ERROR).hasText(LOGIN_ERROR);
         assertThat(header.loggedInAs(), "%sUser should not be logged in", PAGE_NAME_LOGIN).isHidden();
+    }
+
+    @Test(description = "Signup with an already registered email", groups = PRIORITY_HIGH)
+    @QaseId(90)
+    public void signupFailsWhenEmailAlreadyRegisteredTest() {
+        // the existing user comes from the API, a hardcoded one could be deleted by someone
+        TestUser existing = userService.create();
+
+        loginPage.open().signup("Another Name", existing.email());
+
+        assertThat(loginPage.signupError(), "%sError should be %s", PAGE_NAME_LOGIN, SIGNUP_EMAIL_EXISTS_ERROR)
+                .hasText(SIGNUP_EMAIL_EXISTS_ERROR);
     }
 }

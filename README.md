@@ -39,11 +39,19 @@ Install browsers once:
   -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install"
 ```
 
-Run the suite:
+Run everything (Maven finds every test class itself):
 
 ```bash
 ./mvnw test
 ```
+
+Run one area from its suite file. The suites live in `src/test/resources/testngSuites`: `api/api-tests.xml` and `ui/<page>-tests.xml` for `home`, `ad-blocker`, `login`, `products`, `cart` and `contact-us`. In the IDE run the file itself; with Maven pass its path:
+
+```bash
+./mvnw test -Dsurefire.suiteXmlFiles=src/test/resources/testngSuites/ui/cart-tests.xml
+```
+
+A new test needs an entry in the suite file of its page so it can be run on its own; `./mvnw test` runs it anyway.
 
 ## Configuration
 

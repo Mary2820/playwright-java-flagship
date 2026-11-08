@@ -26,19 +26,24 @@ public abstract class BaseTest {
     protected UserApi userApi;
     protected UserService userService;
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void setupPlaywright() {
         pw = Playwright.create();
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setupApi(Method method) {
         LOGGER.info("Test started: {}.{}", method.getDeclaringClass().getSimpleName(), method.getName());
-        // separate from context.request(), so API calls do not share cookies with the browser
-        apiRequest = pw.request().newContext(new APIRequest.NewContextOptions()
-                .setBaseURL(Config.baseUrl()));
+        apiRequest = newApiRequest();
         userApi = new UserApi(apiRequest);
         userService = new UserService(userApi);
+    }
+
+    // separate from context.request(), so API calls do not share cookies with the browser;
+    // a class that needs a user before its first test (@BeforeClass) creates its own and disposes it
+    protected APIRequestContext newApiRequest() {
+        return pw.request().newContext(new APIRequest.NewContextOptions()
+                .setBaseURL(Config.baseUrl()));
     }
 
     @AfterMethod(alwaysRun = true)

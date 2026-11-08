@@ -8,17 +8,31 @@ public interface IConstants {
     String PAGE_NAME_LOGIN = "[LOGIN screen]: ";
     String PAGE_NAME_PRODUCTS = "[PRODUCTS screen]: ";
     String PAGE_NAME_CART = "[CART screen]: ";
+    String PAGE_NAME_CONTACT_US = "[CONTACT US screen]: ";
     String PAGE_NAME_AD_BLOCKER = "[AD BLOCKER]: ";
     String PAGE_NAME_USER_API = "[USER API]: ";
 
+    // TestNG groups, the same as the case priority in Qase; run one with -Dgroups=high
+    String PRIORITY_HIGH = "high";
+    String PRIORITY_MEDIUM = "medium";
+    String PRIORITY_LOW = "low";
+
     // pages
     String HOME_PAGE_TITLE = "Automation Exercise";
+    String CONTACT_US_PATH = "/contact_us";
 
     // UI messages
     String LOGIN_ERROR = "Your email or password is incorrect!";
     String WRONG_PASSWORD = "wrong_password";
     String SEARCHED_PRODUCTS_TITLE = "Searched Products";
     String DEFAULT_QUANTITY = "1";
+    String EMPTY_CART_MESSAGE = "Cart is empty";
+    // the site's own wording, "exist" without the s
+    String SIGNUP_EMAIL_EXISTS_ERROR = "Email Address already exist!";
+    String CONTACT_CONFIRM_DIALOG = "Press OK to proceed!";
+    String CONTACT_SUCCESS = "submitted successfully";
+    String CONTACT_US_HEADING = "Contact Us";
+    String CONTACT_US_FORM_HEADING = "Get In Touch";
 
     // API endpoints
     String CREATE_ACCOUNT_ENDPOINT = "/api/createAccount";

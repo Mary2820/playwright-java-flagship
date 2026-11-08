@@ -1,0 +1,30 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="cart">
+    <test name="Added product appears in cart">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.CartTest">
+                <methods>
+                    <include name="addedProductAppearsInCartWithCatalogPriceAndQuantityOneTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Removed product disappears from cart">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.CartTest">
+                <methods>
+                    <include name="removedProductDisappearsAndCartBecomesEmptyTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Cart persists across sessions">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.AuthenticatedCartTest">
+                <methods>
+                    <include name="cartPersistsAcrossSessionsForLoggedInUserTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

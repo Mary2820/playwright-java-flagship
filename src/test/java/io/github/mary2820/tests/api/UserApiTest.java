@@ -13,7 +13,7 @@ import static io.github.mary2820.constants.IConstants.*;
 
 public class UserApiTest extends BaseApiTest {
 
-    @Test
+    @Test(description = "User lifecycle: create, login, delete, login again", groups = PRIORITY_HIGH)
     @QaseIds({46, 52, 57, 69})
     public void userLifecycleTest() {
         TestUser user = TestUserFactory.random();
@@ -38,7 +38,7 @@ public class UserApiTest extends BaseApiTest {
         }
     }
 
-    @Test
+    @Test(description = "POST /createAccount with a taken email is rejected", groups = PRIORITY_HIGH)
     @QaseId(53)
     public void duplicateEmailIsRejectedTest() {
         TestUser user = userService.create();
@@ -48,7 +48,7 @@ public class UserApiTest extends BaseApiTest {
                 "%sCreate account response for a taken email should be %s", PAGE_NAME_USER_API, rejected);
     }
 
-    @Test
+    @Test(description = "POST /verifyLogin with a wrong password", groups = PRIORITY_HIGH)
     @QaseId(51)
     public void wrongPasswordIsRejectedTest() {
         TestUser user = userService.create();

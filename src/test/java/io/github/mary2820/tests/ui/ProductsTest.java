@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import static io.github.mary2820.assertions.CustomAssert.assertThat;
 import static io.github.mary2820.constants.IConstants.PAGE_NAME_PRODUCTS;
 import static io.github.mary2820.constants.IConstants.SEARCHED_PRODUCTS_TITLE;
+import static io.github.mary2820.constants.IConstants.PRIORITY_HIGH;
 
 public class ProductsTest extends BaseUiTest {
     // the site also searches by category, "top" returns shirts without the word in the name, all "jeans" names have it
@@ -19,12 +20,12 @@ public class ProductsTest extends BaseUiTest {
 
     private ProductsPage products;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void initPages() {
         products = new ProductsPage(page);
     }
 
-    @Test
+    @Test(description = "Search returns only matching products", groups = PRIORITY_HIGH)
     @QaseId(111)
     public void searchReturnsOnlyMatchingProductsTest() {
         products.open().search(SEARCH_TERM);

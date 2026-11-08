@@ -1,0 +1,57 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="contact-us">
+    <test name="Contact form is submitted after confirm">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.ContactUsTest">
+                <methods>
+                    <include name="contactFormIsSubmittedAfterConfirmingDialogTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Contact page shows all form elements">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.ContactUsTest">
+                <methods>
+                    <include name="contactPageShowsAllFormElementsTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Cancelled dialog does not send the form">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.ContactUsTest">
+                <methods>
+                    <include name="cancelledDialogDoesNotSendFormTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Form is submitted with the required email only">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.ContactUsTest">
+                <methods>
+                    <include name="emailOnlyFormIsSubmittedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Empty email blocks the submission">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.ContactUsTest">
+                <methods>
+                    <include name="emptyEmailBlocksSubmissionTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Invalid email formats are rejected">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.ContactUsTest">
+                <methods>
+                    <include name="invalidEmailFormatsAreRejectedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
