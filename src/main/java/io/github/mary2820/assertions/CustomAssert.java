@@ -49,8 +49,9 @@ public final class CustomAssert {
             verify(message, () -> PlaywrightAssertions.assertThat(page).hasTitle(title));
         }
 
-        public void hasUrl(Pattern pattern) {
-            verify(message, () -> PlaywrightAssertions.assertThat(page).hasURL(pattern));
+        // the path part of the URL, so a test does not build a regex; the path is used as is, without special characters
+        public void hasPath(String path) {
+            verify(message, () -> PlaywrightAssertions.assertThat(page).hasURL(Pattern.compile(".*" + path + "$")));
         }
     }
 

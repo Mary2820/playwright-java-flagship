@@ -16,7 +16,8 @@ import org.testng.annotations.BeforeMethod;
 
 import java.lang.reflect.Method;
 
-// shared by UI and API tests, TestNG treats same-named lifecycle methods in subclasses as overrides
+// shared by UI and API tests, TestNG treats same-named lifecycle methods in subclasses as overrides;
+// the state is kept in fields, so run test classes in parallel (parallel="classes"), never methods
 public abstract class BaseTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
 

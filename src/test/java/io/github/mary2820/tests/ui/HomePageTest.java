@@ -20,5 +20,4 @@ public class HomePageTest extends BaseUiTest {
         assertThat(page, "%sTitle should be %s", PAGE_NAME_HOME, HOME_PAGE_TITLE).hasTitle(HOME_PAGE_TITLE);
         assertThat(homePage.logo(), "%sLogo should be visible", PAGE_NAME_HOME).isVisible();
     }
-
 }

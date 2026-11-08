@@ -11,9 +11,7 @@ import org.testng.annotations.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import static io.github.mary2820.assertions.CustomAssert.*;
 import static io.github.mary2820.constants.IConstants.*;
@@ -29,20 +27,6 @@ public class ContactUsTest extends BaseUiTest {
         contactUs = new ContactUsPage(page);
     }
 
-    // dialogs are dismissed unless accepted, so the list shows which ones appeared; the handler is set before the click,
-    // because a dialog blocks the page
-    private List<String> recordDialogs(boolean accept) {
-        List<String> messages = new ArrayList<>();
-        page.onDialog(dialog -> {
-            messages.add(dialog.message());
-            if (accept)
-                dialog.accept();
-            else
-                dialog.dismiss();
-        });
-        return messages;
-    }
-
     @DataProvider(name = "invalidEmails")
     public Object[][] invalidEmails() {
         return new Object[][]{{"abc"}, {"abc@"}, {"@mail.com"}, {"a b@mail.com"}};
@@ -53,21 +37,13 @@ public class ContactUsTest extends BaseUiTest {
     public void contactFormIsSubmittedAfterConfirmingDialogTest() {
         // the form needs only a name and an email, so no account is created through the API
         TestUser user = TestUserFactory.random();
-        // a lambda cannot reassign a local variable, so the message goes into a list
-        List<String> dialogMessages = new ArrayList<>();
-        // Playwright dismisses dialogs by default, confirm() would return false and the form would not be sent;
-        // the handler is set before the click, because the dialog blocks the page, and once so a stray dialog is not accepted
-        page.onceDialog(dialog -> {
-            dialogMessages.add(dialog.message());
-            dialog.accept();
-        });
 
-        contactUs.open().fill(user.name(), user.email(), "Order question", "Hello from autotest", ATTACHMENT);
-        contactUs.submit();
+        contactUs.open().fill(user.name(), user.email(), CONTACT_SUBJECT, CONTACT_MESSAGE, ATTACHMENT);
+        contactUs.submitAndConfirm();
 
         assertThat(contactUs.success(), "%sForm should be submitted", PAGE_NAME_CONTACT_US)
                 .containsText(CONTACT_SUCCESS);
-        assertEquals(dialogMessages, List.of(CONTACT_CONFIRM_DIALOG), "%sOnly the confirm dialog should appear",
+        assertEquals(contactUs.dialogs(), List.of(CONTACT_CONFIRM_DIALOG), "%sOnly the confirm dialog should appear",
                 PAGE_NAME_CONTACT_US);
     }
 
@@ -92,38 +68,37 @@ public class ContactUsTest extends BaseUiTest {
     @QaseId(4)
     public void cancelledDialogDoesNotSendFormTest() {
         TestUser user = TestUserFactory.random();
-        List<String> dialogMessages = recordDialogs(false);
 
-        contactUs.open().fill(user.name(), user.email(), "Order question", "Hello from autotest", ATTACHMENT);
-        contactUs.submit();
+        contactUs.open().fill(user.name(), user.email(), CONTACT_SUBJECT, CONTACT_MESSAGE, ATTACHMENT);
+        contactUs.submitAndCancel();
 
-        assertEquals(dialogMessages, List.of(CONTACT_CONFIRM_DIALOG), "%sOnly the confirm dialog should appear",
+        assertEquals(contactUs.dialogs(), List.of(CONTACT_CONFIRM_DIALOG), "%sOnly the confirm dialog should appear",
                 PAGE_NAME_CONTACT_US);
+        // the site sends nothing over the network, the success block is the only sign of a submission; the dialog
+        // is resolved inside the click, so it is already hidden or shown here
         assertThat(contactUs.success(), "%sSuccess message should not be shown", PAGE_NAME_CONTACT_US).isHidden();
-        assertThat(page, "%sForm should stay on the page", PAGE_NAME_CONTACT_US)
-                .hasUrl(Pattern.compile(".*" + CONTACT_US_PATH + "$"));
+        assertThat(page, "%sForm should stay on the page", PAGE_NAME_CONTACT_US).hasPath(CONTACT_US_PATH);
         assertThat(contactUs.nameField(), "%sName should be kept", PAGE_NAME_CONTACT_US).hasValue(user.name());
         assertThat(contactUs.emailField(), "%sEmail should be kept", PAGE_NAME_CONTACT_US).hasValue(user.email());
         assertThat(contactUs.subjectField(), "%sSubject should be kept", PAGE_NAME_CONTACT_US)
-                .hasValue("Order question");
+                .hasValue(CONTACT_SUBJECT);
         assertThat(contactUs.messageField(), "%sMessage should be kept", PAGE_NAME_CONTACT_US)
-                .hasValue("Hello from autotest");
+                .hasValue(CONTACT_MESSAGE);
     }
 
     @Test(description = "Form is submitted with the required Email only", groups = PRIORITY_HIGH)
     @QaseId(7)
     public void emailOnlyFormIsSubmittedTest() {
         TestUser user = TestUserFactory.random();
-        List<String> dialogMessages = recordDialogs(true);
 
         contactUs.open().fillEmail(user.email());
         // after the submit the fields are gone from the page, so the empty ones are checked before it
         assertThat(contactUs.nameField(), "%sName should be empty", PAGE_NAME_CONTACT_US).hasValue("");
         assertThat(contactUs.subjectField(), "%sSubject should be empty", PAGE_NAME_CONTACT_US).hasValue("");
         assertThat(contactUs.messageField(), "%sMessage should be empty", PAGE_NAME_CONTACT_US).hasValue("");
-        contactUs.submit();
+        contactUs.submitAndConfirm();
 
-        assertEquals(dialogMessages, List.of(CONTACT_CONFIRM_DIALOG), "%sOnly the confirm dialog should appear",
+        assertEquals(contactUs.dialogs(), List.of(CONTACT_CONFIRM_DIALOG), "%sOnly the confirm dialog should appear",
                 PAGE_NAME_CONTACT_US);
         assertThat(contactUs.success(), "%sForm should be submitted", PAGE_NAME_CONTACT_US)
                 .containsText(CONTACT_SUCCESS);
@@ -132,30 +107,27 @@ public class ContactUsTest extends BaseUiTest {
     @Test(description = "Empty Email blocks the submission", groups = PRIORITY_HIGH)
     @QaseId(8)
     public void emptyEmailBlocksSubmissionTest() {
-        List<String> dialogMessages = recordDialogs(false);
-
         contactUs.open();
-        contactUs.fillName("Test User");
-        contactUs.fillSubject("Order question");
-        contactUs.fillMessage("Hello from autotest");
+        contactUs.fillName(CONTACT_NAME);
+        contactUs.fillSubject(CONTACT_SUBJECT);
+        contactUs.fillMessage(CONTACT_MESSAGE);
         contactUs.submit();
 
         assertTrue(contactUs.isEmailMissing(), "%sEmail should be reported as required", PAGE_NAME_CONTACT_US);
         // the browser moves the focus to the field it complains about
         assertThat(contactUs.emailField(), "%sEmail should be focused", PAGE_NAME_CONTACT_US).isFocused();
-        assertEmpty(dialogMessages, "%sNo dialog should appear", PAGE_NAME_CONTACT_US);
+        assertEmpty(contactUs.dialogs(), "%sNo dialog should appear", PAGE_NAME_CONTACT_US);
+        assertThat(contactUs.success(), "%sSuccess message should not be shown", PAGE_NAME_CONTACT_US).isHidden();
     }
 
     @Test(description = "Invalid Email formats are rejected", dataProvider = "invalidEmails", groups = PRIORITY_HIGH)
     @QaseId(9)
     public void invalidEmailFormatsAreRejectedTest(String email) {
-        List<String> dialogMessages = recordDialogs(false);
-
         contactUs.open().fillEmail(email);
         contactUs.submit();
 
         assertTrue(contactUs.isEmailInvalid(), "%sEmail '%s' should be reported as invalid", PAGE_NAME_CONTACT_US,
                 email);
-        assertEmpty(dialogMessages, "%sNo dialog should appear", PAGE_NAME_CONTACT_US);
+        assertEmpty(contactUs.dialogs(), "%sNo dialog should appear", PAGE_NAME_CONTACT_US);
     }
 }

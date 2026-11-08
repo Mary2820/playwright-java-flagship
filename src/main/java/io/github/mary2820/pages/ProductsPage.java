@@ -5,6 +5,8 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.github.mary2820.components.ProductCard;
 
+import java.util.List;
+
 public class ProductsPage extends BasePage {
     private static final String PATH = "/products";
 
@@ -24,7 +26,7 @@ public class ProductsPage extends BasePage {
         this.textNames = page.locator(".features_items .productinfo p");
         this.linkViewCart = page.locator("#cartModal")
                 .getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("View Cart"));
-}
+    }
 
     public ProductsPage open() {
         page.navigate(PATH);
@@ -42,8 +44,11 @@ public class ProductsPage extends BasePage {
         return textTitle;
     }
 
-    public Locator productNames() {
-        return textNames;
+    // all() and allInnerTexts() do not wait, so the first name is awaited here: an empty result must fail
+    // instead of giving an empty list that passes any check
+    public List<String> foundProductNames() {
+        textNames.first().waitFor();
+        return textNames.allInnerTexts();
     }
 
     public ProductCard card(int index) {

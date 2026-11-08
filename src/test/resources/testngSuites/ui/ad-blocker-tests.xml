@@ -11,7 +11,7 @@
     </test>
     <test name="Ad URLs are recognised">
         <classes>
-            <class name="io.github.mary2820.tests.ui.AdBlockerTest">
+            <class name="io.github.mary2820.tests.ui.AdHostsTest">
                 <methods>
                     <include name="isAdTest"/>
                 </methods>

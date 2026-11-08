@@ -5,6 +5,8 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 
 import java.nio.file.Path;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static io.github.mary2820.constants.IConstants.CONTACT_US_FORM_HEADING;
 import static io.github.mary2820.constants.IConstants.CONTACT_US_PATH;
@@ -21,6 +23,9 @@ public class ContactUsPage extends BasePage {
     private final Locator inputFile;
     private final Locator buttonSubmit;
     private final Locator textSuccess;
+    // the page events arrive on another thread
+    private final List<String> dialogMessages = new CopyOnWriteArrayList<>();
+    private volatile boolean acceptDialogs;
 
     public ContactUsPage(Page page) {
         super(page);
@@ -39,6 +44,15 @@ public class ContactUsPage extends BasePage {
         this.buttonSubmit = formContact.locator("[data-qa=submit-button]");
         // the page has two .contact-form elements, the status block is inside the outer one
         this.textSuccess = page.locator(".contact-form .status");
+        // Playwright dismisses dialogs by default and confirm() would return false; the handler is set before any
+        // click, because a dialog blocks the page, and the page decides per submit whether to accept it
+        page.onDialog(dialog -> {
+            dialogMessages.add(dialog.message());
+            if (acceptDialogs)
+                dialog.accept();
+            else
+                dialog.dismiss();
+        });
     }
 
     public ContactUsPage open() {
@@ -49,10 +63,10 @@ public class ContactUsPage extends BasePage {
     }
 
     public void fill(String name, String email, String subject, String message, Path attachment) {
-        inputName.fill(name);
-        inputEmail.fill(email);
-        inputSubject.fill(subject);
-        inputMessage.fill(message);
+        fillName(name);
+        fillEmail(email);
+        fillSubject(subject);
+        fillMessage(message);
         inputFile.setInputFiles(attachment);
     }
 
@@ -72,8 +86,23 @@ public class ContactUsPage extends BasePage {
         inputMessage.fill(message);
     }
 
+    // for a click that must not show a dialog; a dialog that does appear is dismissed and recorded
     public void submit() {
+        acceptDialogs = false;
         buttonSubmit.click();
+    }
+
+    public void submitAndConfirm() {
+        acceptDialogs = true;
+        buttonSubmit.click();
+    }
+
+    public void submitAndCancel() {
+        submit();
+    }
+
+    public List<String> dialogs() {
+        return List.copyOf(dialogMessages);
     }
 
     public Locator success() {

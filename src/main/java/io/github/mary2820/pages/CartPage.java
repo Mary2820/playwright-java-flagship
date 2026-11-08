@@ -28,7 +28,7 @@ public class CartPage extends BasePage {
         return textEmptyCart;
     }
 
-    // the row is removed by JS without a reload, so the test waits for it with a web-first assertion
+    // the row is removed by JS without a reload, so a test waits for it with a web-first assertion on the rows
     public void deleteIn(int index) {
         // cart.js is loaded at the end of the page and binds the click handler: the row is in the DOM before that,
         // and an early click does nothing, so wait for the load event

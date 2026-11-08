@@ -4,9 +4,9 @@ import io.github.mary2820.base.BaseUiTest;
 import io.github.mary2820.components.ProductCard;
 import io.github.mary2820.pages.CartPage;
 import io.github.mary2820.pages.ProductsPage;
-import org.testng.annotations.BeforeMethod;
 import io.qase.commons.annotation.QaseId;
 import io.qase.commons.annotation.QaseIds;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static io.github.mary2820.assertions.CustomAssert.assertThat;
@@ -56,6 +56,8 @@ public class CartTest extends BaseUiTest {
         cart.deleteIn(0);
 
         assertThat(cart.rows(), "%sCart should have no rows after the removal", PAGE_NAME_CART).hasCount(0);
+        // containsText also passes for a hidden element, so the message has to be visible as well
+        assertThat(cart.emptyCart(), "%sEmpty cart message should be visible", PAGE_NAME_CART).isVisible();
         assertThat(cart.emptyCart(), "%sCart should say it is empty", PAGE_NAME_CART)
                 .containsText(EMPTY_CART_MESSAGE);
     }

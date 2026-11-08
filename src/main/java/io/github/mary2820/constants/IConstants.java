@@ -22,6 +22,7 @@ public interface IConstants {
     String CONTACT_US_PATH = "/contact_us";
 
     // UI messages
+    String LOGGED_IN_AS = "Logged in as ";
     String LOGIN_ERROR = "Your email or password is incorrect!";
     String WRONG_PASSWORD = "wrong_password";
     String SEARCHED_PRODUCTS_TITLE = "Searched Products";
@@ -31,6 +32,9 @@ public interface IConstants {
     String SIGNUP_EMAIL_EXISTS_ERROR = "Email Address already exist!";
     String CONTACT_CONFIRM_DIALOG = "Press OK to proceed!";
     String CONTACT_SUCCESS = "submitted successfully";
+    String CONTACT_NAME = "Test User";
+    String CONTACT_SUBJECT = "Order question";
+    String CONTACT_MESSAGE = "Hello from autotest";
     String CONTACT_US_HEADING = "Contact Us";
     String CONTACT_US_FORM_HEADING = "Get In Touch";
 

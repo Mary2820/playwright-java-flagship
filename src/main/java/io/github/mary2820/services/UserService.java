@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.github.mary2820.constants.IConstants.CREATED;
+import static io.github.mary2820.constants.IConstants.NOT_FOUND;
 import static io.github.mary2820.constants.IConstants.OK;
 
 // keeps the users of one test, so an instance must not outlive that test
@@ -34,12 +35,20 @@ public class UserService {
         return user;
     }
 
+    // for a user a test creates itself, when creating and deleting it is what the test checks
+    public void track(TestUser user) {
+        created.add(user);
+    }
+
     // a failed cleanup is an environment issue, so it warns instead of failing the test
     public void cleanup() {
         for (TestUser user : created) {
             try {
                 ApiResponse response = userApi.deleteAccount(user.email(), user.password());
-                if (response.responseCode() != OK)
+                // the test may have deleted the user itself
+                if (response.responseCode() == NOT_FOUND)
+                    LOGGER.debug("Cleanup: {} is already deleted", user.email());
+                else if (response.responseCode() != OK)
                     LOGGER.warn("Cleanup failed for {}: {}", user.email(), response);
             } catch (RuntimeException e) {
                 LOGGER.warn("Cleanup failed for {}: {}", user.email(), e.getMessage());

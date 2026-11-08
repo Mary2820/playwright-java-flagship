@@ -4,13 +4,12 @@ import io.github.mary2820.base.BaseUiTest;
 import io.github.mary2820.components.HeaderComponent;
 import io.github.mary2820.models.TestUser;
 import io.github.mary2820.pages.LoginPage;
-import org.testng.annotations.BeforeMethod;
 import io.qase.commons.annotation.QaseId;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static io.github.mary2820.assertions.CustomAssert.assertThat;
 import static io.github.mary2820.constants.IConstants.*;
-import static io.github.mary2820.constants.IConstants.PRIORITY_HIGH;
 
 public class LoginTest extends BaseUiTest {
     private LoginPage loginPage;
@@ -31,7 +30,7 @@ public class LoginTest extends BaseUiTest {
         loginPage.open().login(user.email(), user.password());
 
         assertThat(header.loggedInAs(), "%sHeader should show the user %s", PAGE_NAME_LOGIN, user.name())
-                .containsText(user.name());
+                .hasText(LOGGED_IN_AS + user.name());
     }
 
     @Test(description = "Login with a wrong password", groups = PRIORITY_HIGH)

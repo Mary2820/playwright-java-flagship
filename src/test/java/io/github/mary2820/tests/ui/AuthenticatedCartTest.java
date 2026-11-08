@@ -48,7 +48,7 @@ public class AuthenticatedCartTest extends BaseUiTest {
             new LoginPage(loginPage).open().login(user.email(), user.password());
             // fail fast: a silent login failure would save a guest state and break every test with an unclear error
             assertThat(new HeaderComponent(loginPage).loggedInAs(), "%sSetup: user should be logged in", PAGE_NAME_LOGIN)
-                    .containsText(user.name());
+                    .hasText(LOGGED_IN_AS + user.name());
             loginContext.storageState(new BrowserContext.StorageStateOptions().setPath(STATE));
         }
     }
@@ -70,18 +70,18 @@ public class AuthenticatedCartTest extends BaseUiTest {
         assertThat(new CartPage(page).rows(), "%sCart should have 1 row in the first session", PAGE_NAME_CART)
                 .hasCount(1);
 
-        // a second context is a second device of the same user
-        try (BrowserContext secondSession = newContext(contextOptions())) {
-            Page secondPage = secondSession.newPage();
-            CartPage cartInSecondSession = new CartPage(secondPage).open();
+        // a second device of the same user: a fresh context without the saved state and a real login, so the cart
+        // has to come from the user's account and not from the first session's cookies
+        Page secondPage = newPage(super.contextOptions());
+        new LoginPage(secondPage).open().login(user.email(), user.password());
+        assertThat(new HeaderComponent(secondPage).loggedInAs(), "%sSecond session should be logged in",
+                PAGE_NAME_LOGIN).hasText(LOGGED_IN_AS + user.name());
+        CartPage cartInSecondSession = new CartPage(secondPage).open();
 
-            assertThat(new HeaderComponent(secondPage).loggedInAs(), "%sSecond session should be logged in", PAGE_NAME_LOGIN)
-                    .containsText(user.name());
-            assertThat(cartInSecondSession.rows(), "%sCart should have 1 row in the second session", PAGE_NAME_CART)
-                    .hasCount(1);
-            assertThat(cartInSecondSession.nameIn(0), "%sProduct should be %s", PAGE_NAME_CART, expectedName)
-                    .hasText(expectedName);
-        }
+        assertThat(cartInSecondSession.rows(), "%sCart should have 1 row in the second session", PAGE_NAME_CART)
+                .hasCount(1);
+        assertThat(cartInSecondSession.nameIn(0), "%sProduct should be %s", PAGE_NAME_CART, expectedName)
+                .hasText(expectedName);
     }
 
     @AfterClass(alwaysRun = true)
