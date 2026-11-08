@@ -5,6 +5,7 @@ import io.github.mary2820.components.ProductCard;
 import io.github.mary2820.pages.CartPage;
 import io.github.mary2820.pages.ProductsPage;
 import org.testng.annotations.BeforeMethod;
+import io.qase.commons.annotation.QaseIds;
 import org.testng.annotations.Test;
 
 import static io.github.mary2820.assertions.CustomAssert.assertThat;
@@ -22,6 +23,7 @@ public class CartTest extends BaseUiTest {
     }
 
     @Test
+    @QaseIds({120, 176})
     public void addedProductAppearsInCartWithCatalogPriceAndQuantityOneTest() {
         ProductCard card = products.open().card(0);
         // expected values come from the catalog, so a changed price or order does not break the test

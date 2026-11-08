@@ -4,6 +4,7 @@ import com.microsoft.playwright.Locator;
 import io.github.mary2820.base.BaseUiTest;
 import io.github.mary2820.pages.ProductsPage;
 import org.testng.annotations.BeforeMethod;
+import io.qase.commons.annotation.QaseId;
 import org.testng.annotations.Test;
 
 import java.util.regex.Pattern;
@@ -24,6 +25,7 @@ public class ProductsTest extends BaseUiTest {
     }
 
     @Test
+    @QaseId(111)
     public void searchReturnsOnlyMatchingProductsTest() {
         products.open().search(SEARCH_TERM);
 

@@ -4,6 +4,8 @@ import io.github.mary2820.base.BaseApiTest;
 import io.github.mary2820.factories.TestUserFactory;
 import io.github.mary2820.models.ApiResponse;
 import io.github.mary2820.models.TestUser;
+import io.qase.commons.annotation.QaseId;
+import io.qase.commons.annotation.QaseIds;
 import org.testng.annotations.Test;
 
 import static io.github.mary2820.assertions.CustomAssert.assertEquals;
@@ -12,6 +14,7 @@ import static io.github.mary2820.constants.IConstants.*;
 public class UserApiTest extends BaseApiTest {
 
     @Test
+    @QaseIds({46, 52, 57, 69})
     public void userLifecycleTest() {
         TestUser user = TestUserFactory.random();
         ApiResponse created = new ApiResponse(CREATED, USER_CREATED);
@@ -36,6 +39,7 @@ public class UserApiTest extends BaseApiTest {
     }
 
     @Test
+    @QaseId(53)
     public void duplicateEmailIsRejectedTest() {
         TestUser user = userService.create();
         ApiResponse rejected = new ApiResponse(BAD_REQUEST, EMAIL_ALREADY_EXISTS);
@@ -45,6 +49,7 @@ public class UserApiTest extends BaseApiTest {
     }
 
     @Test
+    @QaseId(51)
     public void wrongPasswordIsRejectedTest() {
         TestUser user = userService.create();
         ApiResponse notFound = new ApiResponse(NOT_FOUND, USER_NOT_FOUND);

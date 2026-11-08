@@ -20,6 +20,7 @@
         <jackson.version>2.22.4</jackson.version>
         <assertj.version>3.27.7</assertj.version>
         <datafaker.version>2.7.0</datafaker.version>
+        <qase.version>4.1.66</qase.version>
         <suite>src/test/resources/testng.xml</suite>
     </properties>
 
@@ -60,6 +61,12 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.qase</groupId>
+            <artifactId>qase-testng-reporter</artifactId>
+            <version>${qase.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -67,6 +67,21 @@ Examples:
 ./mvnw test -Dheadless=false -DslowMo=500
 ```
 
+## Qase reporting
+
+Tests are linked to Qase cases (project `PJF`) with `@QaseId` / `@QaseIds`. Reporting is off by default, so `./mvnw test` needs no token. To send results, set the variables for the run (Maven does not read `.env` itself):
+
+| Variable                  | Value                         |
+|---------------------------|-------------------------------|
+| `QASE_MODE`               | `testops`                     |
+| `QASE_TESTOPS_PROJECT`    | `PJF`                         |
+| `QASE_TESTOPS_API_TOKEN`  | API token, kept in `.env`     |
+
+```bash
+set -a; source .env; set +a
+QASE_MODE=testops QASE_TESTOPS_PROJECT=PJF ./mvnw test
+```
+
 ## Traces on failure
 
 Every test records a Playwright trace. If the test fails, it is saved to `traces/<TestClass>.<testMethod>.zip`; passing tests leave nothing behind.
