@@ -5,6 +5,7 @@ import io.github.mary2820.components.HeaderComponent;
 import io.github.mary2820.models.TestUser;
 import io.github.mary2820.pages.LoginPage;
 import org.testng.annotations.BeforeMethod;
+import io.qase.commons.annotation.QaseId;
 import org.testng.annotations.Test;
 
 import static io.github.mary2820.assertions.CustomAssert.assertThat;
@@ -22,6 +23,7 @@ public class LoginTest extends BaseUiTest {
     }
 
     @Test
+    @QaseId(76)
     public void userCanLoginWithValidCredentialsTest() {
         TestUser user = userService.create();
 
@@ -32,6 +34,7 @@ public class LoginTest extends BaseUiTest {
     }
 
     @Test
+    @QaseId(77)
     public void loginFailsWithWrongPasswordTest() {
         TestUser user = userService.create();
 
