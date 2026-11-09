@@ -9,4 +9,31 @@
             </class>
         </classes>
     </test>
+    <test name="Products page shows search, sidebar and cards">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.ProductsTest">
+                <methods>
+                    <include name="productsPageShowsSearchSidebarAndCardsTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="View Product opens matching product page">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.ProductsTest">
+                <methods>
+                    <include name="viewProductOpensMatchingProductPageTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Add to cart opens confirmation modal">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.ProductsTest">
+                <methods>
+                    <include name="addToCartOpensConfirmationModalTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>

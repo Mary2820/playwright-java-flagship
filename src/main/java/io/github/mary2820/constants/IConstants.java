@@ -9,6 +9,7 @@ public interface IConstants {
     String PAGE_NAME_HEADER = "[HEADER]: ";
     String PAGE_NAME_PRODUCTS = "[PRODUCTS screen]: ";
     String PAGE_NAME_CART = "[CART screen]: ";
+    String PAGE_NAME_PRODUCT_DETAIL = "[PRODUCT DETAIL screen]: ";
     String PAGE_NAME_CONTACT_US = "[CONTACT US screen]: ";
     String PAGE_NAME_AD_BLOCKER = "[AD BLOCKER]: ";
     String PAGE_NAME_USER_API = "[USER API]: ";
@@ -33,6 +34,13 @@ public interface IConstants {
     // never registered: the site is shared, so the address is on a reserved domain nobody can own
     String UNREGISTERED_EMAIL = "no.such.user.autotest@example.test";
     String SIGNUP_NAME = "Test User";
+    String PRODUCTS_TITLE = "All Products";
+    // the size of the catalog on the live site, taken from the case; update it together with the case
+    int PRODUCTS_COUNT = 34;
+    String CART_ADDED_TITLE = "Added!";
+    String CART_ADDED_MESSAGE = "Your product has been added to cart.";
+    // a regex: hasPath puts it into a pattern, the id is not known in advance
+    String PRODUCT_DETAILS_PATH = "/product_details/\\d+";
     String SEARCHED_PRODUCTS_TITLE = "Searched Products";
     String DEFAULT_QUANTITY = "1";
     String EMPTY_CART_MESSAGE = "Cart is empty";
