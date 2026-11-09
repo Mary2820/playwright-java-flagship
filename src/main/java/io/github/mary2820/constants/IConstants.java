@@ -26,6 +26,13 @@ public interface IConstants {
     String LOGGED_IN_AS = "Logged in as ";
     String LOGIN_ERROR = "Your email or password is incorrect!";
     String WRONG_PASSWORD = "wrong_password";
+    String LOGIN_HEADING = "Login to your account";
+    String OR_HEADING = "OR";
+    String SIGNUP_HEADING = "New User Signup!";
+    String ACCOUNT_INFO_HEADING = "Enter Account Information";
+    // never registered: the site is shared, so the address is on a reserved domain nobody can own
+    String UNREGISTERED_EMAIL = "no.such.user.autotest@example.test";
+    String SIGNUP_NAME = "Test User";
     String SEARCHED_PRODUCTS_TITLE = "Searched Products";
     String DEFAULT_QUANTITY = "1";
     String EMPTY_CART_MESSAGE = "Cart is empty";
