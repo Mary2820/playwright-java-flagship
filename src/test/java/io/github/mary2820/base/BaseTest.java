@@ -3,6 +3,7 @@ package io.github.mary2820.base;
 import com.microsoft.playwright.APIRequest;
 import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.Playwright;
+import io.github.mary2820.api.ProductApi;
 import io.github.mary2820.api.UserApi;
 import io.github.mary2820.config.Config;
 import io.github.mary2820.services.UserService;
@@ -25,6 +26,7 @@ public abstract class BaseTest {
     Playwright pw;
     private APIRequestContext apiRequest;
     protected UserApi userApi;
+    protected ProductApi productApi;
     protected UserService userService;
 
     @BeforeClass(alwaysRun = true)
@@ -37,6 +39,7 @@ public abstract class BaseTest {
         LOGGER.info("Test started: {}.{}", method.getDeclaringClass().getSimpleName(), method.getName());
         apiRequest = newApiRequest();
         userApi = new UserApi(apiRequest);
+        productApi = new ProductApi(apiRequest);
         userService = new UserService(userApi);
     }
 

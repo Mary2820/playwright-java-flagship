@@ -43,7 +43,7 @@ public class ProductsPage extends BasePage {
     }
 
     public ProductsPage open() {
-        page.navigate(PATH);
+        navigate(PATH);
         // a wait, not an assertion: if the page did not load, the failure names the search field
         inputSearch.waitFor();
         return this;

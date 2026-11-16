@@ -16,7 +16,7 @@ public class CartPage extends BasePage {
     }
 
     public CartPage open() {
-        page.navigate(PATH);
+        navigate(PATH);
         return this;
     }
 

@@ -1,0 +1,21 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="product-detail">
+    <test name="Product page shows all information">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.ProductDetailTest">
+                <methods>
+                    <include name="productDetailPageShowsAllInformationTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Details match card and API">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.ProductDetailTest">
+                <methods>
+                    <include name="productDetailsMatchCardAndApiTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

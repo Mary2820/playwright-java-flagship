@@ -49,7 +49,7 @@ public class LoginPage extends BasePage {
     }
 
     public LoginPage open() {
-        page.navigate(PATH);
+        navigate(PATH);
         // a wait, not an assertion: if the page did not load, the failure names the form and not the email field
         formLogin.waitFor();
         return this;

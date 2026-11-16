@@ -56,7 +56,7 @@ public class ContactUsPage extends BasePage {
     }
 
     public ContactUsPage open() {
-        page.navigate(CONTACT_US_PATH);
+        navigate(CONTACT_US_PATH);
         // a wait, not an assertion: if the page did not load, the failure names the form
         formContact.waitFor();
         return this;
