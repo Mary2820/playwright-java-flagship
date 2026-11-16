@@ -5,6 +5,7 @@ import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Tracing;
+import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import io.github.mary2820.config.Config;
 import io.github.mary2820.utils.AdBlocker;
 import org.slf4j.Logger;
@@ -16,6 +17,10 @@ import org.testng.annotations.BeforeMethod;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class BaseUiTest extends BaseTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseUiTest.class);
@@ -23,10 +28,14 @@ public abstract class BaseUiTest extends BaseTest {
 
     private Browser browser;
     private BrowserContext context;
+    // contexts a test opens for a second session, closed after the test so the test has no lifecycle code
+    private final List<BrowserContext> extraContexts = new ArrayList<>();
     protected Page page;
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void setupBrowser() {
+        // assertions have their own default of 5 s, setDefaultTimeout on a context does not reach them
+        PlaywrightAssertions.setDefaultAssertionTimeout(Config.timeout());
         LOGGER.info("Launching {} (headless={}, slowMo={}), baseUrl={}",
                 Config.browser(), Config.headless(), Config.slowMo(), Config.baseUrl());
         browser = browserType().launch(new BrowserType.LaunchOptions()
@@ -43,13 +52,9 @@ public abstract class BaseUiTest extends BaseTest {
         };
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setupPage() {
-        context = browser.newContext(getConfig());
-        if (Config.blockAds()) {
-            AdBlocker.apply(context);
-        }
-        context.setDefaultTimeout(Config.timeout());
+        context = newContext(contextOptions());
         context.tracing().start(new Tracing.StartOptions()
                 .setScreenshots(true)
                 .setSnapshots(true)
@@ -57,13 +62,34 @@ public abstract class BaseUiTest extends BaseTest {
         page = context.newPage();
     }
 
-    private Browser.NewContextOptions getConfig() {
+    // template method: setupPage fixes the order of the steps, a test class overrides only the options
+    protected Browser.NewContextOptions contextOptions() {
         return new Browser.NewContextOptions()
                 .setBaseURL(Config.baseUrl());
     }
 
+    // for contexts a test opens itself, so they get the same ad blocking and timeout as the default one;
+    // the caller closes it
+    protected BrowserContext newContext(Browser.NewContextOptions options) {
+        BrowserContext created = browser.newContext(options);
+        if (Config.blockAds()) {
+            AdBlocker.apply(created);
+        }
+        created.setDefaultTimeout(Config.timeout());
+        return created;
+    }
+
+    // a page in its own context, for a second session of a test; the context is closed after the test
+    protected Page newPage(Browser.NewContextOptions options) {
+        BrowserContext extra = newContext(options);
+        extraContexts.add(extra);
+        return extra.newPage();
+    }
+
     @AfterMethod(alwaysRun = true)
     public void cleanupPage(ITestResult result) {
+        extraContexts.forEach(BrowserContext::close);
+        extraContexts.clear();
         if (context == null)
             return;
         try {
@@ -77,10 +103,19 @@ public abstract class BaseUiTest extends BaseTest {
         }
     }
 
+    // a data provider runs one method several times, the parameters keep the trace files apart
+    private static String traceName(ITestResult result) {
+        String parameters = Arrays.stream(result.getParameters())
+                .map(String::valueOf)
+                .collect(Collectors.joining("_"));
+        String name = testName(result) + (parameters.isEmpty() ? "" : "-" + parameters);
+        return name.replaceAll("[^A-Za-z0-9._-]", "_");
+    }
+
     private void stopTracing(ITestResult result) {
         // keep trace.zip only for failed tests
         if (result.getStatus() == ITestResult.FAILURE) {
-            Path trace = TRACES_DIR.resolve(testName(result) + ".zip");
+            Path trace = TRACES_DIR.resolve(traceName(result) + ".zip");
             context.tracing().stop(new Tracing.StopOptions()
                     .setPath(trace));
             LOGGER.info("Trace saved to {}", trace.toAbsolutePath());

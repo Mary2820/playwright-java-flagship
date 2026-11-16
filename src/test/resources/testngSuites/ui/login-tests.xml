@@ -1,0 +1,57 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="login">
+    <test name="Login with valid credentials">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.LoginTest">
+                <methods>
+                    <include name="userCanLoginWithValidCredentialsTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Login with wrong password">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.LoginTest">
+                <methods>
+                    <include name="loginFailsWithWrongPasswordTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Signup fails with registered email">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.LoginTest">
+                <methods>
+                    <include name="signupFailsWhenEmailAlreadyRegisteredTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Login page shows both forms">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.LoginTest">
+                <methods>
+                    <include name="loginPageShowsBothFormsTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Login fails with unregistered email">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.LoginTest">
+                <methods>
+                    <include name="loginFailsWithUnregisteredEmailTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Signup with new email opens account information">
+        <classes>
+            <class name="io.github.mary2820.tests.ui.LoginTest">
+                <methods>
+                    <include name="signupWithNewEmailOpensAccountInformationTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

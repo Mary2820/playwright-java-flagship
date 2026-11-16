@@ -4,6 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -38,9 +39,19 @@ public final class CustomAssert {
             throw new AssertionError(format(message, args) + "\nExpected: " + expected + "\nReceived: " + actual);
     }
 
+    public static void assertEmpty(Collection<?> actual, String message, Object... args) {
+        if (!actual.isEmpty())
+            throw new AssertionError(format(message, args) + "\nExpected: empty\nReceived: " + actual);
+    }
+
     public record PageAssert(Page page, String message) {
         public void hasTitle(String title) {
             verify(message, () -> PlaywrightAssertions.assertThat(page).hasTitle(title));
+        }
+
+        // the path part of the URL, so a test does not build a regex; the path is used as is, without special characters
+        public void hasPath(String path) {
+            verify(message, () -> PlaywrightAssertions.assertThat(page).hasURL(Pattern.compile(".*" + path + "$")));
         }
     }
 
@@ -51,6 +62,14 @@ public final class CustomAssert {
 
         public void isHidden() {
             verify(message, () -> PlaywrightAssertions.assertThat(locator).isHidden());
+        }
+
+        public void isFocused() {
+            verify(message, () -> PlaywrightAssertions.assertThat(locator).isFocused());
+        }
+
+        public void hasValue(String value) {
+            verify(message, () -> PlaywrightAssertions.assertThat(locator).hasValue(value));
         }
 
         public void hasCount(int count) {

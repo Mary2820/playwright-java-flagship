@@ -7,8 +7,9 @@ UI test automation for [automationexercise.com](https://automationexercise.com) 
 - Java 21
 - Playwright for Java 1.63
 - TestNG 7.12
-- Maven 3.9.9 via Maven Wrapper (`./mvnw`, no local Maven needed), Surefire 3.6
-- SLF4J + Logback for logging
+- Maven 3.9.9 via Maven Wrapper (`./mvnw`, no local Maven needed)
+- SLF4J + Logback for logging, AssertJ, Datafaker, Jackson
+- Qase TestNG reporter (off by default)
 
 ## Project structure
 
@@ -16,19 +17,30 @@ UI test automation for [automationexercise.com](https://automationexercise.com) 
 src/
 ├── main/
 │   ├── java/io/github/mary2820/
+│   │   ├── api/         # UserApi: the site's REST API
+│   │   ├── assertions/  # CustomAssert: assertions with a message
+│   │   ├── components/  # parts shared by pages (HeaderComponent, ProductCard)
 │   │   ├── config/      # Config: reads config.properties, -D overrides
-│   │   └── pages/       # Page Objects (BasePage, HomePage, ...)
+│   │   ├── constants/   # IConstants: texts, paths, priorities
+│   │   ├── factories/   # TestUserFactory: random test data
+│   │   ├── models/      # TestUser, ApiResponse
+│   │   ├── pages/       # Page Objects (BasePage, HomePage, ...)
+│   │   ├── services/    # UserService: creates and cleans up users
+│   │   └── utils/       # AdBlocker
 │   └── resources/
 │       └── config.properties
 └── test/
     ├── java/io/github/mary2820/
-    │   ├── base/        # BaseTest: browser, context, tracing lifecycle
-    │   └── tests/ui/    # UI tests
+    │   ├── base/        # BaseTest, BaseUiTest, BaseApiTest: browser, context, tracing lifecycle
+    │   └── tests/       # ui/ and api/ tests
     └── resources/
-        └── testng.xml
+        ├── files/       # files the tests upload
+        └── testngSuites/  # one suite file per page or area
 ```
 
-Framework code (config, pages) lives in `src/main`; tests and test lifecycle live in `src/test`. Tests contain no locators, only actions on pages and assertions.
+Framework code (config, pages, components, assertions, constants) lives in `src/main`; tests and test lifecycle live in `src/test`. Tests contain no locators, only actions on pages and assertions.
+
+Tests are marked with `groups` (`high`, `medium`, `low`, the priority of the Qase case), `description` (the case title) and `@QaseId` / `@QaseIds`. Run one priority with `-Dgroups=high`. Test classes may run in parallel, methods may not: the state is kept in fields.
 
 ## Running tests
 
@@ -39,11 +51,19 @@ Install browsers once:
   -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install"
 ```
 
-Run the suite:
+Run everything (Maven finds every test class itself):
 
 ```bash
 ./mvnw test
 ```
+
+Run one area from its suite file. The suites live in `src/test/resources/testngSuites`: `api/api-tests.xml` and `ui/<page>-tests.xml` for `home`, `header`, `ad-blocker`, `login`, `products`, `cart` and `contact-us`. In the IDE run the file itself; with Maven pass its path:
+
+```bash
+./mvnw test -Dsurefire.suiteXmlFiles=src/test/resources/testngSuites/ui/cart-tests.xml
+```
+
+A new test needs an entry in the suite file of its page so it can be run on its own; `./mvnw test` runs it anyway.
 
 ## Configuration
 

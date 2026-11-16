@@ -7,19 +7,33 @@ public class CartPage extends BasePage {
     private static final String PATH = "/view_cart";
 
     private final Locator rows;
+    private final Locator textEmptyCart;
 
     public CartPage(Page page) {
         super(page);
         this.rows = page.locator("#cart_info_table tbody tr");
+        this.textEmptyCart = page.locator("#empty_cart");
     }
 
     public CartPage open() {
-        page.navigate(PATH);
+        navigate(PATH);
         return this;
     }
 
     public Locator rows() {
         return rows;
+    }
+
+    public Locator emptyCart() {
+        return textEmptyCart;
+    }
+
+    // the row is removed by JS without a reload, so a test waits for it with a web-first assertion on the rows
+    public void deleteIn(int index) {
+        // cart.js is loaded at the end of the page and binds the click handler: the row is in the DOM before that,
+        // and an early click does nothing, so wait for the load event
+        page.waitForLoadState();
+        rows.nth(index).locator(".cart_quantity_delete").click();
     }
 
     public Locator nameIn(int index) {

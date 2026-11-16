@@ -13,7 +13,7 @@ import static io.github.mary2820.constants.IConstants.*;
 
 public class UserApiTest extends BaseApiTest {
 
-    @Test
+    @Test(description = "User lifecycle: create, login, delete, login again", groups = PRIORITY_HIGH)
     @QaseIds({46, 52, 57, 69})
     public void userLifecycleTest() {
         TestUser user = TestUserFactory.random();
@@ -22,23 +22,20 @@ public class UserApiTest extends BaseApiTest {
         ApiResponse deleted = new ApiResponse(OK, ACCOUNT_DELETED);
         ApiResponse notFound = new ApiResponse(NOT_FOUND, USER_NOT_FOUND);
 
-        // not userService.create(): creating and deleting the user is what this test checks
+        // not userService.create(): creating and deleting the user is what this test checks; tracking it lets the
+        // cleanup remove the user if an assertion below fails, and it ignores a user that is already gone
+        userService.track(user);
         assertEquals(userApi.createAccount(user), created,
                 "%sCreate account response should be %s", PAGE_NAME_USER_API, created);
-        try {
-            assertEquals(userApi.verifyLogin(user.email(), user.password()), loggedIn,
-                    "%sLogin response for a new user should be %s", PAGE_NAME_USER_API, loggedIn);
-            assertEquals(userApi.deleteAccount(user.email(), user.password()), deleted,
-                    "%sDelete account response should be %s", PAGE_NAME_USER_API, deleted);
-            assertEquals(userApi.verifyLogin(user.email(), user.password()), notFound,
-                    "%sLogin response for a deleted user should be %s", PAGE_NAME_USER_API, notFound);
-        } finally {
-            // removes the user if an assertion above failed, otherwise it answers 404
-            userApi.deleteAccount(user.email(), user.password());
-        }
+        assertEquals(userApi.verifyLogin(user.email(), user.password()), loggedIn,
+                "%sLogin response for a new user should be %s", PAGE_NAME_USER_API, loggedIn);
+        assertEquals(userApi.deleteAccount(user.email(), user.password()), deleted,
+                "%sDelete account response should be %s", PAGE_NAME_USER_API, deleted);
+        assertEquals(userApi.verifyLogin(user.email(), user.password()), notFound,
+                "%sLogin response for a deleted user should be %s", PAGE_NAME_USER_API, notFound);
     }
 
-    @Test
+    @Test(description = "POST /createAccount with a taken email is rejected", groups = PRIORITY_HIGH)
     @QaseId(53)
     public void duplicateEmailIsRejectedTest() {
         TestUser user = userService.create();
@@ -48,7 +45,7 @@ public class UserApiTest extends BaseApiTest {
                 "%sCreate account response for a taken email should be %s", PAGE_NAME_USER_API, rejected);
     }
 
-    @Test
+    @Test(description = "POST /verifyLogin with a wrong password", groups = PRIORITY_HIGH)
     @QaseId(51)
     public void wrongPasswordIsRejectedTest() {
         TestUser user = userService.create();

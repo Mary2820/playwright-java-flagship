@@ -3,6 +3,7 @@ package io.github.mary2820.base;
 import com.microsoft.playwright.APIRequest;
 import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.Playwright;
+import io.github.mary2820.api.ProductApi;
 import io.github.mary2820.api.UserApi;
 import io.github.mary2820.config.Config;
 import io.github.mary2820.services.UserService;
@@ -16,7 +17,8 @@ import org.testng.annotations.BeforeMethod;
 
 import java.lang.reflect.Method;
 
-// shared by UI and API tests, TestNG treats same-named lifecycle methods in subclasses as overrides
+// shared by UI and API tests, TestNG treats same-named lifecycle methods in subclasses as overrides;
+// the state is kept in fields, so run test classes in parallel (parallel="classes"), never methods
 public abstract class BaseTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
 
@@ -24,21 +26,28 @@ public abstract class BaseTest {
     Playwright pw;
     private APIRequestContext apiRequest;
     protected UserApi userApi;
+    protected ProductApi productApi;
     protected UserService userService;
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void setupPlaywright() {
         pw = Playwright.create();
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setupApi(Method method) {
         LOGGER.info("Test started: {}.{}", method.getDeclaringClass().getSimpleName(), method.getName());
-        // separate from context.request(), so API calls do not share cookies with the browser
-        apiRequest = pw.request().newContext(new APIRequest.NewContextOptions()
-                .setBaseURL(Config.baseUrl()));
+        apiRequest = newApiRequest();
         userApi = new UserApi(apiRequest);
+        productApi = new ProductApi(apiRequest);
         userService = new UserService(userApi);
+    }
+
+    // separate from context.request(), so API calls do not share cookies with the browser;
+    // a class that needs a user before its first test (@BeforeClass) creates its own and disposes it
+    protected APIRequestContext newApiRequest() {
+        return pw.request().newContext(new APIRequest.NewContextOptions()
+                .setBaseURL(Config.baseUrl()));
     }
 
     @AfterMethod(alwaysRun = true)
