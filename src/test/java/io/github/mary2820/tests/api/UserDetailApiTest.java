@@ -10,6 +10,7 @@ import io.qase.commons.annotation.QaseId;
 import org.testng.annotations.Test;
 
 import static io.github.mary2820.assertions.CustomAssert.assertEquals;
+import static io.github.mary2820.assertions.CustomAssert.assertTrue;
 import static io.github.mary2820.constants.IConstants.*;
 import static io.restassured.RestAssured.given;
 
@@ -22,11 +23,26 @@ public class UserDetailApiTest extends BaseApiTest {
 
         UserResponse body = getUserDetail(registered.email());
 
-        User expected = new User(body.user() == null ? 0 : body.user().id(), registered.name(), registered.email(),
-                registered.firstName(), registered.lastName(), registered.address1(), registered.country(),
-                registered.zipcode(), registered.state(), registered.city());
+        User user = body.user();
         assertEquals(body.responseCode(), OK, "%sresponseCode should be %s", PAGE_NAME_USER_API, OK);
-        assertEquals(body.user(), expected, "%sUser should have the data given at registration", PAGE_NAME_USER_API);
+        assertTrue(user != null, "%sUser should be returned", PAGE_NAME_USER_API);
+        // the server issues the id, so only its presence can be checked
+        assertTrue(user.id() > 0, "%sUser id should be set", PAGE_NAME_USER_API);
+        assertEquals(user.name(), registered.name(), "%sName should be %s", PAGE_NAME_USER_API, registered.name());
+        assertEquals(user.email(), registered.email(), "%sEmail should be %s", PAGE_NAME_USER_API, registered.email());
+        assertEquals(user.firstName(), registered.firstName(), "%sFirst name should be %s", PAGE_NAME_USER_API,
+                registered.firstName());
+        assertEquals(user.lastName(), registered.lastName(), "%sLast name should be %s", PAGE_NAME_USER_API,
+                registered.lastName());
+        assertEquals(user.address1(), registered.address1(), "%sAddress should be %s", PAGE_NAME_USER_API,
+                registered.address1());
+        assertEquals(user.country(), registered.country(), "%sCountry should be %s", PAGE_NAME_USER_API,
+                registered.country());
+        assertEquals(user.zipcode(), registered.zipcode(), "%sZipcode should be %s", PAGE_NAME_USER_API,
+                registered.zipcode());
+        assertEquals(user.state(), registered.state(), "%sState should be %s", PAGE_NAME_USER_API,
+                registered.state());
+        assertEquals(user.city(), registered.city(), "%sCity should be %s", PAGE_NAME_USER_API, registered.city());
     }
 
     @Test(description = "GET /getUserDetailByEmail without email is rejected", groups = PRIORITY_MEDIUM)
