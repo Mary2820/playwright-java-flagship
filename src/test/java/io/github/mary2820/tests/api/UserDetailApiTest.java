@@ -63,8 +63,8 @@ public class UserDetailApiTest extends BaseApiTest {
         UserResponse body = getUserDetail(TestUserFactory.random().email());
 
         assertEquals(body.responseCode(), NOT_FOUND, "%sresponseCode should be %s", PAGE_NAME_USER_API, NOT_FOUND);
-        assertEquals(body.message(), ACCOUNT_NOT_FOUND, "%sMessage should be %s", PAGE_NAME_USER_API,
-                ACCOUNT_NOT_FOUND);
+        assertEquals(body.message(), USER_DETAIL_NOT_FOUND, "%sMessage should be %s", PAGE_NAME_USER_API,
+                USER_DETAIL_NOT_FOUND);
     }
 
     private UserResponse getUserDetail(String email) {

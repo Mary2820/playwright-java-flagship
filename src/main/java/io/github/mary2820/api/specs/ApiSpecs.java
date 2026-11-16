@@ -9,6 +9,7 @@ import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
+import static io.github.mary2820.constants.IConstants.DUMMYJSON_URL;
 import static io.github.mary2820.constants.IConstants.OK;
 
 public final class ApiSpecs {
@@ -38,5 +39,22 @@ public final class ApiSpecs {
 
     public static <T> T body(ValidatableResponse response, Class<T> type) {
         return response.extract().jsonPath().getObject("", type);
+    }
+
+    // for the endpoints that send a real HTTP status (dummyjson, a wrong method on the account endpoints)
+    public static ResponseSpecification jsonResponse(int status) {
+        return new ResponseSpecBuilder()
+                .expectStatusCode(status)
+                .expectContentType(ContentType.JSON)
+                .build();
+    }
+
+    public static RequestSpecification dummyJsonRequest() {
+        return new RequestSpecBuilder()
+                .setBaseUri(DUMMYJSON_URL)
+                .setContentType(ContentType.JSON)
+                .setAccept(ContentType.JSON)
+                .log(LogDetail.URI)
+                .build();
     }
 }
