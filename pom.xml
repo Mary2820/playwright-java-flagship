@@ -19,6 +19,7 @@
         <assertj.version>3.27.7</assertj.version>
         <datafaker.version>2.7.0</datafaker.version>
         <qase.version>4.1.66</qase.version>
+        <rest-assured.version>5.5.5</rest-assured.version>
     </properties>
 
     <dependencies>
@@ -59,6 +60,11 @@
             <artifactId>assertj-core</artifactId>
             <version>${assertj.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
         </dependency>
         <dependency>
             <groupId>io.qase</groupId>
