@@ -17,13 +17,13 @@ UI test automation for [automationexercise.com](https://automationexercise.com) 
 src/
 ├── main/
 │   ├── java/io/github/mary2820/
-│   │   ├── api/         # UserApi: the site's REST API
+│   │   ├── api/         # UserApi, ProductApi: the site's REST API
 │   │   ├── assertions/  # CustomAssert: assertions with a message
-│   │   ├── components/  # parts shared by pages (HeaderComponent, ProductCard)
+│   │   ├── components/  # parts shared by pages (HeaderComponent, HeaderItem, ProductCard)
 │   │   ├── config/      # Config: reads config.properties, -D overrides
 │   │   ├── constants/   # IConstants: texts, paths, priorities
 │   │   ├── factories/   # TestUserFactory: random test data
-│   │   ├── models/      # TestUser, ApiResponse
+│   │   ├── models/      # TestUser, ApiResponse, Product, ProductsResponse
 │   │   ├── pages/       # Page Objects (BasePage, HomePage, ...)
 │   │   ├── services/    # UserService: creates and cleans up users
 │   │   └── utils/       # AdBlocker
@@ -31,7 +31,7 @@ src/
 │       └── config.properties
 └── test/
     ├── java/io/github/mary2820/
-    │   ├── base/        # BaseTest, BaseUiTest, BaseApiTest: browser, context, tracing lifecycle
+    │   ├── base/        # BaseTest (API clients), BaseUiTest (browser, context, tracing), BaseApiTest (no browser)
     │   └── tests/       # ui/ and api/ tests
     └── resources/
         ├── files/       # files the tests upload
@@ -40,7 +40,7 @@ src/
 
 Framework code (config, pages, components, assertions, constants) lives in `src/main`; tests and test lifecycle live in `src/test`. Tests contain no locators, only actions on pages and assertions.
 
-Tests are marked with `groups` (`high`, `medium`, `low`, the priority of the Qase case), `description` (the case title) and `@QaseId` / `@QaseIds`. Run one priority with `-Dgroups=high`. Test classes may run in parallel, methods may not: the state is kept in fields.
+Tests are marked with `groups` (`high`, `medium`, `low`, the priority of the Qase case), `description` (the case title) and `@QaseId` / `@QaseIds`. Run one priority with `-Dgroups=high`. Parallel execution is not configured. If you enable it, run classes in parallel, never methods: the state is kept in fields.
 
 ## Running tests
 
@@ -57,7 +57,7 @@ Run everything (Maven finds every test class itself):
 ./mvnw test
 ```
 
-Run one area from its suite file. The suites live in `src/test/resources/testngSuites`: `api/api-tests.xml` and `ui/<page>-tests.xml` for `home`, `header`, `ad-blocker`, `login`, `products`, `cart` and `contact-us`. In the IDE run the file itself; with Maven pass its path:
+Run one area from its suite file. The suites live in `src/test/resources/testngSuites`: `api/api-tests.xml` and `ui/<page>-tests.xml` for `home`, `header`, `ad-blocker`, `login`, `products`, `product-detail`, `cart` and `contact-us`. In the IDE run the file itself; with Maven pass its path:
 
 ```bash
 ./mvnw test -Dsurefire.suiteXmlFiles=src/test/resources/testngSuites/ui/cart-tests.xml
@@ -77,7 +77,7 @@ Defaults are in `src/main/resources/config.properties`. Any value can be overrid
 | `timeout`  | `10000`                          | Default timeout for actions, ms          |
 | `slowMo`   | `0`                              | Delay between actions, ms                |
 | `blockAds` | `true`                           | Abort requests to ad and consent hosts   |
-| `logLevel` | `INFO`                           | Project log level; `DEBUG` shows blocked ad requests |
+| `logLevel` | `INFO`                           | Project log level, read by `logback-test.xml` and not by `Config`; `DEBUG` shows blocked ad requests |
 
 Examples:
 
@@ -89,7 +89,7 @@ Examples:
 
 ## Qase reporting
 
-Tests are linked to Qase cases (project `PJF`) with `@QaseId` / `@QaseIds`. Reporting is off by default, so `./mvnw test` needs no token. To send results, set the variables for the run (Maven does not read `.env` itself):
+Tests are linked to Qase cases (project `PJF`) with `@QaseId` / `@QaseIds`. Reporting is off by default, so `./mvnw test` needs no token. The reporter still prints `Starting test run` and `Uploading results` to the log in this mode; nothing is sent. To send results, set the variables for the run (Maven does not read `.env` itself):
 
 | Variable                  | Value                         |
 |---------------------------|-------------------------------|
