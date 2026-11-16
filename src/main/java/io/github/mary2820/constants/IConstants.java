@@ -12,6 +12,7 @@ public interface IConstants {
     String PAGE_NAME_PRODUCT_DETAIL = "[PRODUCT DETAIL screen]: ";
     String PAGE_NAME_PRODUCT_API = "[PRODUCT API]: ";
     String PAGE_NAME_BRAND_API = "[BRAND API]: ";
+    String PAGE_NAME_SEARCH_API = "[SEARCH API]: ";
     String PAGE_NAME_CONTACT_US = "[CONTACT US screen]: ";
     String PAGE_NAME_AD_BLOCKER = "[AD BLOCKER]: ";
     String PAGE_NAME_USER_API = "[USER API]: ";
@@ -71,6 +72,10 @@ public interface IConstants {
     String PRODUCTS_LIST_ENDPOINT = "/api/productsList";
     String BRANDS_LIST_ENDPOINT = "/api/brandsList";
     String USER_DETAIL_ENDPOINT = "/api/getUserDetailByEmail";
+    String SEARCH_PRODUCT_ENDPOINT = "/api/searchProduct";
+    String SEARCH_PARAM = "search_product";
+    String SEARCH_TERM = "top";
+    String SEARCH_NO_MATCH_TERM = "zzzzqqq";
 
     // API response codes, sent in the JSON body, the HTTP status is always 200
     int OK = 200;
@@ -84,6 +89,7 @@ public interface IConstants {
     String ACCOUNT_DELETED = "Account deleted!";
     String USER_NOT_FOUND = "User not found!";
     String EMAIL_ALREADY_EXISTS = "Email already exists!";
+    String SEARCH_PARAM_MISSING = "Bad request, search_product parameter is missing in POST request.";
     String ACCOUNT_NOT_FOUND = "Account not found with this email, try another email!";
     String EMAIL_PARAM_MISSING = "Bad request, email parameter is missing in GET request.";
 

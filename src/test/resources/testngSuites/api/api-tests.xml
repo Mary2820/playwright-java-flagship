@@ -72,4 +72,31 @@
             </class>
         </classes>
     </test>
+    <test name="Search returns matching products">
+        <classes>
+            <class name="io.github.mary2820.tests.api.SearchApiTest">
+                <methods>
+                    <include name="searchReturnsMatchingProductsTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Search with no matches">
+        <classes>
+            <class name="io.github.mary2820.tests.api.SearchApiTest">
+                <methods>
+                    <include name="searchWithNoMatchesReturnsEmptyListTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Search without parameter is rejected">
+        <classes>
+            <class name="io.github.mary2820.tests.api.SearchApiTest">
+                <methods>
+                    <include name="searchWithoutParameterIsRejectedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>
