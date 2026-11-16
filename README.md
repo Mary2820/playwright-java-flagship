@@ -8,7 +8,7 @@ UI test automation for [automationexercise.com](https://automationexercise.com) 
 - Playwright for Java 1.63
 - TestNG 7.12
 - Maven 3.9.9 via Maven Wrapper (`./mvnw`, no local Maven needed)
-- REST Assured (the API tests of the catalog and user data; `UserApi` and `ProductApi` use Playwright's request context)
+- REST Assured (the API tests of the catalog, user data and the dummyjson.com token flow; `UserApi` and `ProductApi` use Playwright's request context)
 - SLF4J + Logback for logging, AssertJ, Datafaker, Jackson
 - Qase TestNG reporter (off by default)
 
@@ -18,14 +18,14 @@ UI test automation for [automationexercise.com](https://automationexercise.com) 
 src/
 ├── main/
 │   ├── java/io/github/mary2820/
-│   │   ├── api/         # UserApi, ProductApi: the site's REST API
+│   │   ├── api/         # UserApi, ProductApi: the site's REST API; AccountRequests, UserForm: REST Assured calls and form fields
 │   │   │   └── specs/   # ApiSpecs: REST Assured request and response specs
 │   │   ├── assertions/  # CustomAssert: assertions with a message
 │   │   ├── components/  # parts shared by pages (HeaderComponent, HeaderItem, ProductCard)
 │   │   ├── config/      # Config: reads config.properties, -D overrides
 │   │   ├── constants/   # IConstants: texts, paths, priorities
 │   │   ├── factories/   # TestUserFactory: random test data
-│   │   ├── models/      # TestUser, ApiResponse, Product, Brand, User and their responses
+│   │   ├── models/      # TestUser, ApiResponse, Product, Brand, User, login and error models and their responses
 │   │   ├── pages/       # Page Objects (BasePage, HomePage, ...)
 │   │   ├── services/    # UserService: creates and cleans up users
 │   │   └── utils/       # AdBlocker
@@ -37,6 +37,7 @@ src/
     │   └── tests/       # ui/ and api/ tests
     └── resources/
         ├── files/       # files the tests upload
+        ├── schemas/     # JSON Schemas of API responses
         └── testngSuites/  # one suite file per page or area
 ```
 

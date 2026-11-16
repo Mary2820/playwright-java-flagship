@@ -99,4 +99,148 @@
             </class>
         </classes>
     </test>
+    <test name="Create account without a required parameter">
+        <classes>
+            <class name="io.github.mary2820.tests.api.UserCrudApiTest">
+                <methods>
+                    <include name="createAccountWithoutRequiredParameterIsRejectedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Update account">
+        <classes>
+            <class name="io.github.mary2820.tests.api.UserCrudApiTest">
+                <methods>
+                    <include name="updateAccountChangesUserDataTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Update account for an unknown email">
+        <classes>
+            <class name="io.github.mary2820.tests.api.UserCrudApiTest">
+                <methods>
+                    <include name="updateAccountForUnknownEmailIsNotFoundTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Update account with a wrong password">
+        <classes>
+            <class name="io.github.mary2820.tests.api.UserCrudApiTest">
+                <methods>
+                    <include name="updateAccountWithWrongPasswordDoesNotChangeUserTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Delete account for an unknown account">
+        <classes>
+            <class name="io.github.mary2820.tests.api.UserCrudApiTest">
+                <methods>
+                    <include name="deleteAccountForUnknownAccountIsNotFoundTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Delete account with a wrong password">
+        <classes>
+            <class name="io.github.mary2820.tests.api.UserCrudApiTest">
+                <methods>
+                    <include name="deleteAccountWithWrongPasswordDoesNotDeleteAccountTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Verify login without email">
+        <classes>
+            <class name="io.github.mary2820.tests.api.VerifyLoginApiTest">
+                <methods>
+                    <include name="verifyLoginWithoutEmailIsRejectedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Verify login without password">
+        <classes>
+            <class name="io.github.mary2820.tests.api.VerifyLoginApiTest">
+                <methods>
+                    <include name="verifyLoginWithoutPasswordIsRejectedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Verify login with DELETE">
+        <classes>
+            <class name="io.github.mary2820.tests.api.VerifyLoginApiTest">
+                <methods>
+                    <include name="verifyLoginWithDeleteIsNotSupportedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Verify login with an unregistered email">
+        <classes>
+            <class name="io.github.mary2820.tests.api.VerifyLoginApiTest">
+                <methods>
+                    <include name="verifyLoginWithUnregisteredEmailIsNotFoundTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Wrong method returns a real HTTP 405">
+        <classes>
+            <class name="io.github.mary2820.tests.api.WrongMethodApiTest">
+                <methods>
+                    <include name="wrongMethodReturnsRealHttp405Test"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Auth login returns tokens">
+        <classes>
+            <class name="io.github.mary2820.tests.api.AuthTokenApiTest">
+                <methods>
+                    <include name="loginReturnsTokensTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Auth me with a Bearer token">
+        <classes>
+            <class name="io.github.mary2820.tests.api.AuthTokenApiTest">
+                <methods>
+                    <include name="meWithBearerTokenReturnsUserTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Auth me without a token">
+        <classes>
+            <class name="io.github.mary2820.tests.api.AuthTokenApiTest">
+                <methods>
+                    <include name="meWithoutTokenIsRejectedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Auth login with a wrong password">
+        <classes>
+            <class name="io.github.mary2820.tests.api.AuthTokenApiTest">
+                <methods>
+                    <include name="loginWithWrongPasswordIsRejectedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Auth login without credentials">
+        <classes>
+            <class name="io.github.mary2820.tests.api.AuthTokenApiTest">
+                <methods>
+                    <include name="loginWithoutCredentialsIsRejectedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>

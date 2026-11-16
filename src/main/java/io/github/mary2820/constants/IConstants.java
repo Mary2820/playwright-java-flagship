@@ -13,6 +13,7 @@ public interface IConstants {
     String PAGE_NAME_PRODUCT_API = "[PRODUCT API]: ";
     String PAGE_NAME_BRAND_API = "[BRAND API]: ";
     String PAGE_NAME_SEARCH_API = "[SEARCH API]: ";
+    String PAGE_NAME_AUTH_API = "[AUTH API]: ";
     String PAGE_NAME_CONTACT_US = "[CONTACT US screen]: ";
     String PAGE_NAME_AD_BLOCKER = "[AD BLOCKER]: ";
     String PAGE_NAME_USER_API = "[USER API]: ";
@@ -69,6 +70,7 @@ public interface IConstants {
     String CREATE_ACCOUNT_ENDPOINT = "/api/createAccount";
     String DELETE_ACCOUNT_ENDPOINT = "/api/deleteAccount";
     String VERIFY_LOGIN_ENDPOINT = "/api/verifyLogin";
+    String UPDATE_ACCOUNT_ENDPOINT = "/api/updateAccount";
     String PRODUCTS_LIST_ENDPOINT = "/api/productsList";
     String BRANDS_LIST_ENDPOINT = "/api/brandsList";
     String USER_DETAIL_ENDPOINT = "/api/getUserDetailByEmail";
@@ -82,16 +84,38 @@ public interface IConstants {
     int CREATED = 201;
     int BAD_REQUEST = 400;
     int NOT_FOUND = 404;
+    int METHOD_NOT_ALLOWED = 405;
+    // dummyjson sends real HTTP statuses
+    int UNAUTHORIZED = 401;
 
     // API response messages
     String USER_CREATED = "User created!";
     String USER_EXISTS = "User exists!";
     String ACCOUNT_DELETED = "Account deleted!";
+    String ACCOUNT_UPDATED = "User updated!";
+    String ACCOUNT_NOT_FOUND = "Account not found!";
+    String METHOD_NOT_SUPPORTED = "This request method is not supported.";
+    String LOGIN_PARAMS_MISSING = "Bad request, email or password parameter is missing in POST request.";
+    // the parameter and the HTTP method are put into the message by the site
+    String PARAM_MISSING_TEMPLATE = "Bad request, %s parameter is missing in %s request.";
+    String METHOD_NOT_ALLOWED_DETAIL_TEMPLATE = "Method \"%s\" not allowed.";
     String USER_NOT_FOUND = "User not found!";
     String EMAIL_ALREADY_EXISTS = "Email already exists!";
     String SEARCH_PARAM_MISSING = "Bad request, search_product parameter is missing in POST request.";
-    String ACCOUNT_NOT_FOUND = "Account not found with this email, try another email!";
+    String USER_DETAIL_NOT_FOUND = "Account not found with this email, try another email!";
     String EMAIL_PARAM_MISSING = "Bad request, email parameter is missing in GET request.";
 
     int ZERO = 0;
+
+    // dummyjson.com, the public demo API for the token flow (its own users, not the site's)
+    String DUMMYJSON_URL = "https://dummyjson.com";
+    String AUTH_LOGIN_ENDPOINT = "/auth/login";
+    String AUTH_ME_ENDPOINT = "/auth/me";
+    String DUMMY_USERNAME = "emilys";
+    String DUMMY_PASSWORD = "emilyspass";
+    String AUTHORIZATION = "Authorization";
+    String BEARER = "Bearer ";
+    String ACCESS_TOKEN_REQUIRED = "Access Token is required";
+    String INVALID_CREDENTIALS = "Invalid credentials";
+    String CREDENTIALS_REQUIRED = "Username and password required";
 }
