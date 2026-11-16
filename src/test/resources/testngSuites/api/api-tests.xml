@@ -27,4 +27,49 @@
             </class>
         </classes>
     </test>
+    <test name="Products list">
+        <classes>
+            <class name="io.github.mary2820.tests.api.CatalogApiTest">
+                <methods>
+                    <include name="productsListReturnsProductsTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Brands list">
+        <classes>
+            <class name="io.github.mary2820.tests.api.CatalogApiTest">
+                <methods>
+                    <include name="brandsListReturnsBrandsTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="User detail returns the user">
+        <classes>
+            <class name="io.github.mary2820.tests.api.UserDetailApiTest">
+                <methods>
+                    <include name="userDetailReturnsUserTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="User detail without email is rejected">
+        <classes>
+            <class name="io.github.mary2820.tests.api.UserDetailApiTest">
+                <methods>
+                    <include name="userDetailWithoutEmailIsRejectedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="User detail for an unknown email">
+        <classes>
+            <class name="io.github.mary2820.tests.api.UserDetailApiTest">
+                <methods>
+                    <include name="userDetailForUnknownEmailIsNotFoundTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>
