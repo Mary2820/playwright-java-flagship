@@ -17,7 +17,7 @@ UI test automation for automationexercise.com: Java 21, Playwright for Java, Tes
 
 - `src/main/.../pages` and `components`: Page Objects, locators are fields, `BasePage.navigate` for paths. `api`, `services`, `factories`, `models`: the site's REST API and test data. `constants/IConstants`: texts, paths, priorities. `assertions/CustomAssert`: assertions with a message.
 - `src/test/.../base`: browser, context and tracing lifecycle. `tests/ui`, `tests/api`: the tests.
-- `src/test/resources/testngSuites`: one suite file per page or area. A new test is added to the suite of its page.
+- `src/test/resources/testngSuites`: one suite file per page or area. A new test is added to the suite of its page; a test without a Qase case (no `@QaseId`) goes to `technical/technical-tests.xml`.
 
 ## Test rules
 

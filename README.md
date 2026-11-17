@@ -61,13 +61,13 @@ Run everything (Maven finds every test class itself):
 ./mvnw test
 ```
 
-Run one area from its suite file. The suites live in `src/test/resources/testngSuites`: `api/api-tests.xml` and `ui/<page>-tests.xml` for `home`, `header`, `ad-blocker`, `login`, `products`, `product-detail`, `cart` and `contact-us`. In the IDE run the file itself; with Maven pass its path:
+Run one area from its suite file. The suites live in `src/test/resources/testngSuites`: `api/api-tests.xml`, `ui/<page>-tests.xml` for `home`, `header`, `login`, `products`, `product-detail`, `cart` and `contact-us`, and `technical/technical-tests.xml`. In the IDE run the file itself; with Maven pass its path:
 
 ```bash
 ./mvnw test -Dsurefire.suiteXmlFiles=src/test/resources/testngSuites/ui/cart-tests.xml
 ```
 
-A new test needs an entry in the suite file of its page so it can be run on its own; `./mvnw test` runs it anyway.
+A new test needs an entry in the suite file of its page so it can be run on its own; `./mvnw test` runs it anyway. A test with no Qase case (no `@QaseId`) is a technical test: it goes to `technical/technical-tests.xml`, not to the suite of a page (today the ad blocker and the JSON Schema checks).
 
 ## Configuration
 
