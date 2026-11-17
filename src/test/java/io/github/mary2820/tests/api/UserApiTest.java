@@ -51,7 +51,7 @@ public class UserApiTest extends BaseApiTest {
         TestUser user = userService.create();
         ApiResponse notFound = new ApiResponse(NOT_FOUND, USER_NOT_FOUND);
 
-        assertEquals(userApi.verifyLogin(user.email(), user.password() + "x"), notFound,
+        assertEquals(userApi.verifyLogin(user.email(), user.password() + WRONG_PASSWORD_SUFFIX), notFound,
                 "%sLogin response for a wrong password should be %s", PAGE_NAME_USER_API, notFound);
     }
 }

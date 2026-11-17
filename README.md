@@ -9,6 +9,7 @@ UI test automation for [automationexercise.com](https://automationexercise.com) 
 - TestNG 7.12
 - Maven 3.9.9 via Maven Wrapper (`./mvnw`, no local Maven needed)
 - REST Assured (the API tests of the catalog, user data and the dummyjson.com token flow; `UserApi` and `ProductApi` use Playwright's request context)
+  - Two HTTP clients on purpose: Playwright's request context creates test data for UI tests, REST Assured is what the API tests themselves check
 - SLF4J + Logback for logging, AssertJ, Datafaker, Jackson
 - Qase TestNG reporter (off by default)
 
@@ -98,7 +99,7 @@ Tests are linked to Qase cases (project `PJF`) with `@QaseId` / `@QaseIds`. Repo
 |---------------------------|-------------------------------|
 | `QASE_MODE`               | `testops`                     |
 | `QASE_TESTOPS_PROJECT`    | `PJF`                         |
-| `QASE_TESTOPS_API_TOKEN`  | API token, kept in `.env`     |
+| `QASE_TESTOPS_API_TOKEN`  | API token, kept in `.env` (copy `.env.example`) |
 
 ```bash
 set -a; source .env; set +a

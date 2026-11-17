@@ -11,7 +11,7 @@ import static io.github.mary2820.constants.IConstants.*;
 
 public class AdBlockerTest extends BaseUiTest {
 
-    @Test(description = "Home page has no ads")
+    @Test(description = "Home page has no ads", groups = PRIORITY_HIGH)
     public void homePageHasNoAdsTest() {
         if (!Config.blockAds())
             throw new SkipException("Ad blocking is disabled (-DblockAds=false)");

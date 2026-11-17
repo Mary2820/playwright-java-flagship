@@ -18,7 +18,7 @@ public final class ApiSpecs {
     private ApiSpecs() {
     }
 
-    // the request is logged only when the test fails, the log of a passing test is not read
+    // the request URI is logged for every test, passing or not
     public static RequestSpecification request() {
         return new RequestSpecBuilder()
                 .setBaseUri(Config.baseUrl())

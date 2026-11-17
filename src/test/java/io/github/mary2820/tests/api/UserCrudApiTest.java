@@ -87,7 +87,7 @@ public class UserCrudApiTest extends BaseApiTest {
     public void updateAccountWithWrongPasswordDoesNotChangeUserTest() {
         TestUser user = userService.create();
         Map<String, String> form = UserForm.fields(changedCopy(user));
-        form.put(UserForm.PASSWORD, user.password() + "x");
+        form.put(UserForm.PASSWORD, user.password() + WRONG_PASSWORD_SUFFIX);
         ApiResponse notFound = new ApiResponse(NOT_FOUND, ACCOUNT_NOT_FOUND);
 
         assertEquals(send(PUT, UPDATE_ACCOUNT_ENDPOINT, form), notFound,
@@ -121,7 +121,7 @@ public class UserCrudApiTest extends BaseApiTest {
         ApiResponse notFound = new ApiResponse(NOT_FOUND, ACCOUNT_NOT_FOUND);
         ApiResponse loggedIn = new ApiResponse(OK, USER_EXISTS);
 
-        assertEquals(send(DELETE, DELETE_ACCOUNT_ENDPOINT, UserForm.credentials(user.email(), user.password() + "x")),
+        assertEquals(send(DELETE, DELETE_ACCOUNT_ENDPOINT, UserForm.credentials(user.email(), user.password() + WRONG_PASSWORD_SUFFIX)),
                 notFound, "%sDelete response for a wrong password should be %s", PAGE_NAME_USER_API, notFound);
         assertEquals(send(POST, VERIFY_LOGIN_ENDPOINT, UserForm.credentials(user.email(), user.password())), loggedIn,
                 "%sLogin after the rejected delete should be %s", PAGE_NAME_USER_API, loggedIn);
