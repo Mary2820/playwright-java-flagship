@@ -63,7 +63,7 @@ public class AuthTokenApiTest extends BaseApiTest {
     @Test(description = "POST /auth/login with a wrong password is rejected", groups = PRIORITY_MEDIUM)
     @QaseId(285)
     public void loginWithWrongPasswordIsRejectedTest() {
-        ErrorResponse body = ApiSpecs.body(login(new LoginRequest(DUMMY_USERNAME, DUMMY_PASSWORD + "x"),
+        ErrorResponse body = ApiSpecs.body(login(new LoginRequest(DUMMY_USERNAME, DUMMY_PASSWORD + WRONG_PASSWORD_SUFFIX),
                 BAD_REQUEST), ErrorResponse.class);
 
         assertEquals(body.message(), INVALID_CREDENTIALS, "%sMessage should be %s", PAGE_NAME_AUTH_API,

@@ -16,6 +16,11 @@ public interface IConstants {
     String PAGE_NAME_AUTH_API = "[AUTH API]: ";
     String PAGE_NAME_CONTACT_US = "[CONTACT US screen]: ";
     String PAGE_NAME_AD_BLOCKER = "[AD BLOCKER]: ";
+    String AD_URL_ADSENSE = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1";
+    String AD_URL_CONSENT = "https://fundingchoicesmessages.google.com/i/pub-1?ers=3";
+    String NOT_AD_URL_SITE = "https://automationexercise.com/products";
+    String NOT_AD_URL_LOOKALIKE = "https://notdoubleclick.net/";
+    String NOT_AD_URL_FONTS = "https://fonts.googleapis.com/css?family=Archivo:400|Arimo:400";
     String PAGE_NAME_USER_API = "[USER API]: ";
 
     // TestNG groups, the same as the case priority in Qase; run one with -Dgroups=high
@@ -31,6 +36,8 @@ public interface IConstants {
     String LOGGED_IN_AS = "Logged in as ";
     String LOGIN_ERROR = "Your email or password is incorrect!";
     String WRONG_PASSWORD = "wrong_password";
+    // appended to a real password to get a wrong one
+    String WRONG_PASSWORD_SUFFIX = "x";
     String LOGIN_HEADING = "Login to your account";
     String OR_HEADING = "OR";
     String SIGNUP_HEADING = "New User Signup!";
