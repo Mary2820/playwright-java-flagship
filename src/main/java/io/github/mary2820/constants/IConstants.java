@@ -14,6 +14,7 @@ public interface IConstants {
     String PAGE_NAME_BRAND_API = "[BRAND API]: ";
     String PAGE_NAME_SEARCH_API = "[SEARCH API]: ";
     String PAGE_NAME_AUTH_API = "[AUTH API]: ";
+    String PAGE_NAME_SCHEMA = "[JSON SCHEMA]: ";
     String PAGE_NAME_CONTACT_US = "[CONTACT US screen]: ";
     String PAGE_NAME_AD_BLOCKER = "[AD BLOCKER]: ";
     String AD_URL_ADSENSE = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1";
@@ -114,6 +115,14 @@ public interface IConstants {
 
     int ZERO = 0;
 
+    String SEARCH_SCHEMA = "schemas/search-products-response.json";
+    String LOGIN_SCHEMA = "schemas/auth-login-response.json";
+    // valid responses the schema tests break one field at a time
+    String SEARCH_RESPONSE = """
+            {"responseCode": 200, "products": [{"id": 1, "name": "Blue Top", "price": "Rs. 500",
+            "brand": "Polo", "category": {"usertype": {"usertype": "Women"}, "category": "Tops"}}]}""";
+    String LOGIN_RESPONSE = """
+            {"accessToken": "a", "refreshToken": "r", "id": 1, "username": "emilys", "email": "e@x.dummy"}""";
     // dummyjson.com, the public demo API for the token flow (its own users, not the site's)
     String DUMMYJSON_URL = "https://dummyjson.com";
     String AUTH_LOGIN_ENDPOINT = "/auth/login";

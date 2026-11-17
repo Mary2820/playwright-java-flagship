@@ -243,4 +243,22 @@
             </class>
         </classes>
     </test>
+    <test name="JSON Schemas accept a valid response">
+        <classes>
+            <class name="io.github.mary2820.tests.api.JsonSchemaTest">
+                <methods>
+                    <include name="validResponseIsAcceptedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="JSON Schemas reject a broken response">
+        <classes>
+            <class name="io.github.mary2820.tests.api.JsonSchemaTest">
+                <methods>
+                    <include name="brokenResponseIsRejectedTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>
